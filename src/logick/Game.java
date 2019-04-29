@@ -13,6 +13,9 @@ public class Game {
 	// matrika vseh presecisc
 	private Intersection[][] grid;
 	
+	// igralec na potezi
+	public Player onMove;
+	
 	public Game() {
 		
 		grid = new Intersection[size][size];
@@ -75,8 +78,55 @@ public class Game {
 		if (black && white) return true; else return false;
 	}
 	
+	// preveri, ali je veriga zmagovalna
+	// ne preveri, ali so vsi kamencki iste barve
+	private boolean isWinning(Chain chain) {
+		int counter = 0;
+		int[] xs = chain.getXS();
+		int[] ys = chain.getYS();
+		for (int i = 0; i < 5; i++) {
+			if (grid[xs[i]][ys[i]] != Intersection.EMPTY) counter++;
+		}
+		return (counter == 5);
+	}
+	
 	public void deleteDead() {
 		for (Chain chain : chains) if (isDead(chain)) deleteChain(chain);
+	}
+	
+	public boolean play(Move move) {
+		if (grid[move.getX()][move.getY()] == Intersection.EMPTY) {
+			grid[move.getX()][move.getY()] = onMove.getIntersection();
+			onMove = onMove.opponent();
+			return true;
+		}
+		else return false;
+	}
+	
+	public Status status() {
+		// zbriše mrtve verige
+		deleteDead();
+		// preveri, ce je kaksna veriga zmagovalna
+		for (Chain chain : chains) {
+			if (isWinning(chain)) {
+				switch (grid[chain.getXS()[0]][chain.getYS()[0]]) {
+				case BLACK: return Status.BLACK_WIN;
+				case WHITE: return Status.WHITE_WIN;
+				case EMPTY: assert false;
+				}
+			}
+		}
+		// preveri, ce je se kako polje prazno in vrne igralca na potezi
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+				if (grid[x][y] == Intersection.EMPTY) {
+					if (onMove == Player.BLACK) return Status.BLACK_MOVE;
+					else if (onMove == Player.WHITE) return Status.WHITE_MOVE;
+				}
+			}
+		}
+		// v primeru, da ni praznih polj in zmagovalne verige, vrne izenacen izid
+		return Status.DRAW;
 	}
 	
 	// doslednost
