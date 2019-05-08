@@ -1,4 +1,4 @@
-package Intelligence;
+package intelligence;
 
 import logick.Move;
 
