@@ -13,15 +13,15 @@ public class Minimax {
 	
 	
 	public static List<EvaluatedMove> EvaluateMove (Game game, int depth, Player me) {
-		List<EvaluatedMove> EvaluatedMoves = new LinkedList<EvaluatedMove> ();
+		List<EvaluatedMove> evaluatedMoves = new LinkedList<EvaluatedMove> ();
 		List<Move> PossibleMoves = game.possibleMoves();
 		for (Move move: PossibleMoves) {
 			Game temporaryGame = new Game();
 			temporaryGame.play(move);
 			int evaluation = minimaxPosition (temporaryGame, depth - 1, me);
-			EvaluatedMoves.add(new EvaluatedMove(move, evaluation));
+			evaluatedMoves.add(new EvaluatedMove(move, evaluation));
 		}
-		return EvaluatedMoves;
+		return evaluatedMoves;
 	}
 	
 	public static int minimaxPosition (Game game, int depth, Player me) {
@@ -32,24 +32,24 @@ public class Minimax {
 		case DRAW: return Draw;
 		default:
 			if (depth == 0) {return evaluatePosition(game, me);}
-			List<EvaluatedMove> EvaluatedMoves = EvaluateMove(game, depth, me);
-			if (game.onMove == me) {return maxEvaluation(EvaluatedMoves);}
-			else {return minEvaluation(EvaluatedMoves);}
+			List<EvaluatedMove> evaluatedMoves = EvaluateMove(game, depth, me);
+			if (game.onMove == me) {return maxEvaluation(evaluatedMoves);}
+			else {return minEvaluation(evaluatedMoves);}
 		}	
 	}
 	
-	public static int maxEvaluation (List<EvaluatedMove> EvaluatedMoves) {
+	public static int maxEvaluation (List<EvaluatedMove> evaluatedMoves) {
 		int max = Lose;
-		for (EvaluatedMove evaluatedMove: EvaluatedMoves) {
+		for (EvaluatedMove evaluatedMove: evaluatedMoves) {
 			if(evaluatedMove.value > max) {max = evaluatedMove.value;}
 		}
 		return max;
 	}
 	
-	public static Move maxMove(List<EvaluatedMove> EvaluatedMoves) {
+	public static Move maxMove(List<EvaluatedMove> evaluatedMoves) {
 		int max = Lose;
 		Move move = null;
-		for (EvaluatedMove evaluatedMove: EvaluatedMoves) {
+		for (EvaluatedMove evaluatedMove: evaluatedMoves) {
 			if (evaluatedMove.value >= max) {
 				max = evaluatedMove.value;
 				move = evaluatedMove.move;	
@@ -58,9 +58,9 @@ public class Minimax {
 		return move;
 	}
 	
-	public static int minEvaluation (List<EvaluatedMove> EvaluatedMoves) {
+	public static int minEvaluation (List<EvaluatedMove> evaluatedMoves) {
 		int min = Win;
-		for (EvaluatedMove evaluatedMove: EvaluatedMoves) {
+		for (EvaluatedMove evaluatedMove: evaluatedMoves) {
 			if(evaluatedMove.value < min) {min = evaluatedMove.value;}
 		}
 		return min;
