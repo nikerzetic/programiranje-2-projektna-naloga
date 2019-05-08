@@ -27,8 +27,8 @@ public class Minimax {
 	public static int minimaxPosition (Game game, int depth, Player me) {
 		Status status = game.status();
 		switch(status) {
-		case BLACK_WIN: return (me == Player.BLACK ? Win: Lose);
-		case WHITE_WIN: return (me == Player.WHITE ? Win: Lose);
+		case BLACK_WIN: return (me.getPlayerColor() == StoneColor.BLACK ? Win: Lose);
+		case WHITE_WIN: return (me.getPlayerColor() == StoneColor.WHITE ? Win: Lose);
 		case DRAW: return Draw;
 		default:
 			if (depth == 0) {return evaluatePosition(game, me);}
@@ -76,13 +76,13 @@ public class Minimax {
 	}
 	
 	public static int evaluateChain(Chain chain, Game game, Player me) {
-		Intersection[][] grid = game.getGrid();
+		StoneColor[][] grid = game.getGrid();
 		int points = 0;
 		int[] xs = chain.getXS();
 		int[] ys = chain.getYS();
 		for (int i = 0; i < 5; i++) {
 			//ker imava list vrst vsebuje samo vrste s crnimi ali belimi kamencki
-			if (grid[xs[i]][ys[i]] != Intersection.EMPTY) points++;
+			if (grid[xs[i]][ys[i]] != StoneColor.EMPTY) points++;
 		}
 		return points;
 		

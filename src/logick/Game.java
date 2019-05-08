@@ -11,14 +11,14 @@ public class Game {
 	private static List<Chain> chains = new LinkedList<Chain>();
 	
 	// matrika vseh presecisc
-	private Intersection[][] grid;
+	private StoneColor[][] grid;
 	
 	// igralec na potezi
 	public Player onMove;
 	
 	public Game() {
 		
-		grid = new Intersection[size][size];
+		grid = new StoneColor[size][size];
 		
 		// sestavi seznam vseh moznih peteric na igralnem polju in
 		// doda vsa presecisce na mrezo in
@@ -29,7 +29,7 @@ public class Game {
 			for (int y = 0; y < size; y++) {
 				
 				// doda prazno presecisce na mrezo
-				grid[x][y] = Intersection.EMPTY;
+				grid[x][y] = StoneColor.EMPTY;
 				
 				// doda vse mozne vrste z zacetkom v (x, y)
 				for (int[] v : vectors) {
@@ -56,7 +56,7 @@ public class Game {
 		List<Move> moves = new LinkedList<Move>();
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
-				if (grid[i][j] == Intersection.EMPTY) moves.add(new Move(i, j));
+				if (grid[i][j] == StoneColor.EMPTY) moves.add(new Move(i, j));
 			}
 		}
 		return moves;
@@ -72,8 +72,8 @@ public class Game {
 		int[] xs = chain.getXS();
 		int[] ys = chain.getYS();
 		for (int i = 0; i < 5; i++) {
-			if (grid[xs[i]][ys[i]] == Intersection.BLACK) black = true;
-			else if (grid[xs[i]][ys[i]] == Intersection.WHITE) white = true;
+			if (grid[xs[i]][ys[i]] == StoneColor.BLACK) black = true;
+			else if (grid[xs[i]][ys[i]] == StoneColor.WHITE) white = true;
 		}
 		if (black && white) return true; else return false;
 	}
@@ -85,7 +85,7 @@ public class Game {
 		int[] xs = chain.getXS();
 		int[] ys = chain.getYS();
 		for (int i = 0; i < 5; i++) {
-			if (grid[xs[i]][ys[i]] != Intersection.EMPTY) counter++;
+			if (grid[xs[i]][ys[i]] != StoneColor.EMPTY) counter++;
 		}
 		return (counter == 5);
 	}
@@ -95,9 +95,8 @@ public class Game {
 	}
 	
 	public boolean play(Move move) {
-		if (grid[move.getX()][move.getY()] == Intersection.EMPTY) {
-			grid[move.getX()][move.getY()] = onMove.getIntersection();
-			onMove = onMove.opponent();
+		if (grid[move.getX()][move.getY()] == StoneColor.EMPTY) {
+			grid[move.getX()][move.getY()] = onMove.getPlayerColor();
 			return true;
 		}
 		else return false;
@@ -119,9 +118,9 @@ public class Game {
 		// preveri, ce je se kako polje prazno in vrne igralca na potezi
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
-				if (grid[x][y] == Intersection.EMPTY) {
-					if (onMove == Player.BLACK) return Status.BLACK_MOVE;
-					else if (onMove == Player.WHITE) return Status.WHITE_MOVE;
+				if (grid[x][y] == StoneColor.EMPTY) {
+					if (onMove.getPlayerColor() == StoneColor.BLACK) return Status.BLACK_MOVE;
+					else if (onMove.getPlayerColor() == StoneColor.WHITE) return Status.WHITE_MOVE;
 				}
 			}
 		}
@@ -141,7 +140,7 @@ public class Game {
 		return chains;
 	}
 	
-	public Intersection[][] getGrid() {
+	public StoneColor[][] getGrid() {
 		return grid;
 	}
 	

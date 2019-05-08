@@ -1,16 +1,14 @@
+import gui.MainWindow;
 import logick.*;
 
 public class Gomoku {
 
 	public static void main(String[] args) {
-		Game game = new Game();
 		
-		// tests if the program properly creates all the chains
-		for (Chain chain : game.getChains()) {
-			System.out.println(chain);
-		}
+		MainWindow mainWindow = new MainWindow();
+		mainWindow.pack();
+		mainWindow.setVisible(true);
 		
-		System.out.println(game.getChains().size());
 	}
 
 }

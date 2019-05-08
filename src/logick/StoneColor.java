@@ -1,6 +1,6 @@
 package logick;
 
-public enum Intersection {
+public enum StoneColor {
 
 	EMPTY,
 	BLACK,

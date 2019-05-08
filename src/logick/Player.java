@@ -1,13 +1,52 @@
 package logick;
 
-public enum Player {
-	BLACK, WHITE;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import gui.PlayingCanvas;
+
+public abstract class Player implements MouseListener {
 	
-	public Player opponent() {
-		if (this == BLACK) return BLACK; else return WHITE;
+	private StoneColor playerColor;
+	
+	public Player(StoneColor color) {
+		
+		playerColor = color;
+		
 	}
 	
-	public Intersection getIntersection() {
-		if (this == BLACK) return Intersection.BLACK; else return Intersection.WHITE;
+	public void setPlayerColor(StoneColor color) {
+		playerColor = color;
 	}
+	
+	public StoneColor getPlayerColor() {
+		return playerColor;
+	}
+	
+	public abstract Move playMove(PlayingCanvas canvas);
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {}
+
+	
+//	public Player opponent() {
+//		if (this == BLACK) return BLACK; else return WHITE;
+//	}
+//	
+//	public Intersection getIntersection() {
+//		if (this == BLACK) return Intersection.BLACK; else return Intersection.WHITE;
+//	}
+	
 }
