@@ -131,12 +131,15 @@ public class Game {
 	// doslednost
 	// A.K.A. get in set metode
 	
+	public static int getSize() {
+		return size;
+	}
 	
 	public void setSize(int n) {
 		size = n;
 	}
 	
-	public List<Chain> getChains() {
+	public static List<Chain> getChains() {
 		return chains;
 	}
 	
@@ -144,4 +147,7 @@ public class Game {
 		return grid;
 	}
 	
+	public void setGrid(StoneColor[][] grid) {
+		this.grid = grid;
+	}
 }

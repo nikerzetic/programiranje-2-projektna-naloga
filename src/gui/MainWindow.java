@@ -25,7 +25,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		
 		setTitle("Gomoku");
 
-		master = new Master();
+		master = new Master(this);
 		canvas = new PlayingCanvas(master);
 		
 		// glavni meni
@@ -76,6 +76,8 @@ public class MainWindow extends JFrame implements ActionListener{
 		
 	}
 
-	
+	public PlayingCanvas getCanvas() {
+		return canvas;
+	}
 	
 }

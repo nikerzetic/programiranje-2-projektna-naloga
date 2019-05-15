@@ -27,7 +27,12 @@ public class HumanPlayer extends Player {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		move = new Move(e.getX(), e.getY());
+		int x = e.getX();
+		int y = e.getY();
+		
+		System.out.println(x + " " + y);
+		
+		// move = new Move(e.getX(), e.getY());
 	}
 	
 }
