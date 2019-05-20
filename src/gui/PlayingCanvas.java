@@ -9,13 +9,12 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import logick.Game;
-import logick.Master;
 import logick.StoneColor;
 
 @SuppressWarnings("serial")
 public class PlayingCanvas extends JPanel {
 	
-	Master master;
+	private MainWindow master;
 	
 	Color lineColor = Color.DARK_GRAY;
 	Color backgroundColor = Color.LIGHT_GRAY;
@@ -26,10 +25,9 @@ public class PlayingCanvas extends JPanel {
 	int stoneRadius = 5;
 	float lineWidth = 1;
 	
-	public PlayingCanvas(Master master) {
+	public PlayingCanvas(MainWindow master) {
 		
 		super();
-		this.master = master;
 		setBackground(Color.WHITE);
 				
 	}

@@ -3,7 +3,7 @@ package logick;
 import gui.MainWindow;
 import gui.PlayingCanvas;
 
-// hrani trenutno stanje igre in nadzoruje njen potek
+// to je razred, ki ga bomo kmalu izbrisali
 
 public class Master {
 	
@@ -13,7 +13,7 @@ public class Master {
 	private PlayingCanvas canvas;
 	
 	public Master(MainWindow mainWindow) {
-		canvas = mainWindow.getCanvas();
+		canvas = mainWindow.getCanvas();                                                    // TU SE VSE ZACNE ZAPLETATI: logick ne bi smel vsebovati kode, ki je povezana z GUI
 		newGame(new HumanPlayer(StoneColor.WHITE), new ComputerPlayer(StoneColor.BLACK));
 	}
 	

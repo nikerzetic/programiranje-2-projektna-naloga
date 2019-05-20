@@ -1,9 +1,14 @@
 package logick;
 
 import java.awt.event.MouseEvent;
+
 import java.awt.event.MouseListener;
 
 import gui.PlayingCanvas;
+
+
+
+// Player je razred, ki zna odigrati potezo. Lahko je ComputerPlayer ali HumanPlayer
 
 public abstract class Player implements MouseListener {
 	

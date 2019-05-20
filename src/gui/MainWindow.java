@@ -10,12 +10,16 @@ import javax.swing.JMenuItem;
 
 import logick.*;
 
+// Hrani trenutno stanje igre in nadzoruje njen potek
+
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame implements ActionListener{
 	
-	private Master master;
-
+	private Game game;
 	private PlayingCanvas canvas;
+	private Player player1;
+	private Player player2;
+	
 	private JMenuItem gameComputerHuman;
 	private JMenuItem gameHumanComputer;
 	private JMenuItem gameComputerComputer;
@@ -25,9 +29,6 @@ public class MainWindow extends JFrame implements ActionListener{
 		
 		setTitle("Gomoku");
 
-		master = new Master(this);
-		canvas = new PlayingCanvas(master);
-		
 		// glavni meni
 		JMenuBar mainMenu = new JMenuBar();
 		setJMenuBar(mainMenu);
@@ -50,7 +51,24 @@ public class MainWindow extends JFrame implements ActionListener{
 		gameMenu.add(gameHumanHuman);
 		gameHumanHuman.addActionListener(this);
 		
-		add(canvas);
+		newGame(new HumanPlayer(StoneColor.WHITE), new ComputerPlayer(StoneColor.BLACK));
+		
+		add(new PlayingCanvas(this));
+		
+	}
+	
+	public void newGame(Player player1, Player player2) {
+		this.game = new Game();
+		
+		this.player1 = player1;
+		this.player2 = player2;
+	}
+	
+	public void repaintCanvas() {
+		canvas.repaint();
+	}
+	
+	public void playMove(Move move) {
 		
 	}
 
@@ -59,25 +77,25 @@ public class MainWindow extends JFrame implements ActionListener{
 
 		Object source = event.getSource();
 		if (source == gameComputerHuman) {
-			master.newGame(new ComputerPlayer(StoneColor.WHITE), new HumanPlayer(StoneColor.BLACK));
+			newGame(new ComputerPlayer(StoneColor.WHITE), new HumanPlayer(StoneColor.BLACK));
 		}
 		
 		if (source == gameHumanComputer) {
-			master.newGame(new HumanPlayer(StoneColor.WHITE), new ComputerPlayer(StoneColor.BLACK));
+			newGame(new HumanPlayer(StoneColor.WHITE), new ComputerPlayer(StoneColor.BLACK));
 		}
 		
 		if (source == gameComputerComputer) {
-			master.newGame(new ComputerPlayer(StoneColor.WHITE), new ComputerPlayer(StoneColor.BLACK));
+			newGame(new ComputerPlayer(StoneColor.WHITE), new ComputerPlayer(StoneColor.BLACK));
 		}
 		
 		if (source == gameHumanHuman) {
-			master.newGame(new HumanPlayer(StoneColor.WHITE), new HumanPlayer(StoneColor.BLACK));
+			newGame(new HumanPlayer(StoneColor.WHITE), new HumanPlayer(StoneColor.BLACK));
 		}
 		
 	}
-
-	public PlayingCanvas getCanvas() {
-		return canvas;
-	}
 	
+	public Game getGame() {
+		return game;
+	}
+
 }
