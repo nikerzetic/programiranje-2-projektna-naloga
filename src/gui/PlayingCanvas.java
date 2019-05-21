@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
@@ -12,9 +15,9 @@ import logick.Game;
 import logick.StoneColor;
 
 @SuppressWarnings("serial")
-public class PlayingCanvas extends JPanel {
+public class PlayingCanvas extends JPanel implements MouseListener, MouseMotionListener {
 	
-	private MainWindow master;
+	private MainWindow master; // tu izvira problem
 	
 	Color lineColor = Color.DARK_GRAY;
 	Color backgroundColor = Color.LIGHT_GRAY;
@@ -29,7 +32,43 @@ public class PlayingCanvas extends JPanel {
 		
 		super();
 		setBackground(Color.WHITE);
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 				
+	}
+	
+	private int[] closestIntersection(int x, int y) {
+		
+		int vicinity = 10;
+		
+		int N = Game.getSize() + 1;
+		int height = this.getHeight();
+		int width = this.getWidth();
+		int size = Math.min(height, width) / N;
+		int padX = (width - size * N) /2;
+		int padY = (height - size * N) /2;
+		
+		int leftLineX = (x - padX) / size - 1;
+		int rightLineX = leftLineX + 1;
+		int topLineY = (y - padY) / size - 1;
+		int bottomLineY = topLineY + 1;
+		
+		int leftX = leftLineX * size + padX;
+		int rightX = rightLineX * size + padX;
+		int topY = topLineY * size + padY;
+		int bottomY = bottomLineY * size + padY;
+		
+		double r1 = Math.sqrt(Math.pow(x - leftX, 2) + Math.pow(y - topY, 2));
+		double r2 = Math.sqrt(Math.pow(x - rightX, 2) + Math.pow(y - topY, 2));
+		double r3 = Math.sqrt(Math.pow(x - leftX, 2) + Math.pow(y - bottomY, 2));
+		double r4 = Math.sqrt(Math.pow(x - rightX, 2) + Math.pow(y - bottomY, 2));
+		
+		if (r1 < vicinity) return new int[] {leftLineX, topLineY}; 
+		else if (r2 < vicinity) return new int[] {rightLineX, topLineY};
+		else if (r3 < vicinity) return new int[] {leftLineX, bottomLineY};
+		else if (r4 < vicinity) return new int[] {rightLineX, bottomLineY};
+		
+		return null;
 	}
 	
 	@Override
@@ -48,10 +87,10 @@ public class PlayingCanvas extends JPanel {
 		int height = getHeight();
 		int width = getWidth();
 		int size = Math.min(height, width) / N;
-		int pad_x = (width - size * N) /2;
-		int pad_y = (height - size * N) /2;
+		int padX = (width - size * N) /2;
+		int padY = (height - size * N) /2;
 
-		g.translate(pad_x, pad_y);
+		g.translate(padX, padY);
 
 		g.setColor(edgeColor);
 		g2.setStroke(new BasicStroke(edgeWidth));
@@ -89,5 +128,33 @@ public class PlayingCanvas extends JPanel {
 		}
 
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+		int intersection[] = closestIntersection(x, y);
+		System.out.println(master.getGame()); // game je null -> null pointer exception
+		if (intersection != null) master.click(intersection[0], intersection[1]);
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e) {} // Presecisce se obarva rdece, ko mu priblizamo misko
+
+	// Neuporabne metode
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {}
 
 }

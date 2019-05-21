@@ -14,7 +14,7 @@ public class Game {
 	private StoneColor[][] grid;
 	
 	// igralec na potezi
-	public Player onMove;
+	private Player onMove;
 	
 	public Game() {
 		
@@ -95,7 +95,7 @@ public class Game {
 	}
 	
 	public boolean play(Move move) {
-		if (grid[move.getX()][move.getY()] == StoneColor.EMPTY) {
+		if (this.possibleMoves().contains(move)) {
 			grid[move.getX()][move.getY()] = onMove.getPlayerColor();
 			return true;
 		}
@@ -144,10 +144,19 @@ public class Game {
 	}
 	
 	public StoneColor[][] getGrid() {
-		return grid;
+		return this.grid;
 	}
 	
 	public void setGrid(StoneColor[][] grid) {
 		this.grid = grid;
 	}
+	
+	public Player getOnMove() {
+		return this.onMove;
+	}
+	
+	public void setOnMove(Player player) {
+		this.onMove = player;
+	}
+	
 }

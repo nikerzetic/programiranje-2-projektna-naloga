@@ -62,6 +62,8 @@ public class MainWindow extends JFrame implements ActionListener{
 		
 		this.player1 = player1;
 		this.player2 = player2;
+		
+		this.game.setOnMove(player1);
 	}
 	
 	public void repaintCanvas() {
@@ -70,6 +72,23 @@ public class MainWindow extends JFrame implements ActionListener{
 	
 	public void playMove(Move move) {
 		
+	}
+	
+	public void click(int x, int y) {
+		if (player1 == this.game.getOnMove() && player1.getHuman()) {
+			// preveri, ce je poteza veljavna, in spremeni barvo polja + osvezi platno + postavi drugega igralca na vrsto
+			if (this.game.possibleMoves().contains(new Move(x, y))) {
+				System.out.println(this.game.getOnMove() + " " + x + " " + y);
+				this.game.setOnMove(player2);
+			}
+		}
+		else if (player2 == this.game.getOnMove() && player2.getHuman()) {
+			// preveri, ce je poteza veljavna, in spremeni barvo polja + osvezi platno + postavi drugega igralca na vrsto
+			if (this.game.possibleMoves().contains(new Move(x, y))) {
+				System.out.println(this.game.getOnMove() + " " + x + " " + y);
+				this.game.setOnMove(player1);
+			}
+		}
 	}
 
 	@Override
