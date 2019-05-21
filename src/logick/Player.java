@@ -1,18 +1,12 @@
 package logick;
 
-import java.awt.event.MouseEvent;
+// Player je razred, ki zna dolociti, ali je igralec na potezi in v primeru racunalnika odigrati potezo. Lahko je ComputerPlayer ali HumanPlayer
 
-import java.awt.event.MouseListener;
-
-import gui.PlayingCanvas;
-
-
-
-// Player je razred, ki zna odigrati potezo. Lahko je ComputerPlayer ali HumanPlayer
-
-public abstract class Player implements MouseListener {
+public abstract class Player {
 	
 	private StoneColor playerColor;
+	
+	protected boolean human;
 	
 	public Player(StoneColor color) {
 		
@@ -21,37 +15,19 @@ public abstract class Player implements MouseListener {
 	}
 	
 	public void setPlayerColor(StoneColor color) {
-		playerColor = color;
+		this.playerColor = color;
 	}
 	
 	public StoneColor getPlayerColor() {
-		return playerColor;
+		return this.playerColor;
+	}
+
+	public boolean getHuman() {
+		return this.human;
 	}
 	
-	public abstract Move playMove(PlayingCanvas canvas);
-
-	@Override
-	public void mouseClicked(MouseEvent arg0) {}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {}
-
-	
-//	public Player opponent() {
-//		if (this == BLACK) return BLACK; else return WHITE;
-//	}
-//	
-//	public Intersection getIntersection() {
-//		if (this == BLACK) return Intersection.BLACK; else return Intersection.WHITE;
-//	}
+	public String toString() {
+		return "Player(" + this.playerColor +"); This is a human player: " + this.human;
+	}
 	
 }
