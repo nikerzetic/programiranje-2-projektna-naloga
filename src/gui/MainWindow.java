@@ -53,7 +53,8 @@ public class MainWindow extends JFrame implements ActionListener{
 		
 		newGame(new HumanPlayer(StoneColor.WHITE), new ComputerPlayer(StoneColor.BLACK));
 		
-		add(new PlayingCanvas(this));
+		canvas = new PlayingCanvas(this);
+		add(canvas);
 		
 	}
 	
@@ -75,20 +76,34 @@ public class MainWindow extends JFrame implements ActionListener{
 	}
 	
 	public void click(int x, int y) {
+		Move move = new Move(x, y);
 		if (player1 == this.game.getOnMove() && player1.getHuman()) {
 			// preveri, ce je poteza veljavna, in spremeni barvo polja + osvezi platno + postavi drugega igralca na vrsto
-			if (this.game.possibleMoves().contains(new Move(x, y))) {
+			if (this.isValidMove(move)) {
 				System.out.println(this.game.getOnMove() + " " + x + " " + y);
+				game.play(move);
+				this.repaintCanvas();
+				this.game.status();
 				this.game.setOnMove(player2);
 			}
 		}
 		else if (player2 == this.game.getOnMove() && player2.getHuman()) {
 			// preveri, ce je poteza veljavna, in spremeni barvo polja + osvezi platno + postavi drugega igralca na vrsto
-			if (this.game.possibleMoves().contains(new Move(x, y))) {
+			if (this.isValidMove(move)) {
 				System.out.println(this.game.getOnMove() + " " + x + " " + y);
+				game.play(move);
+				this.repaintCanvas();
+				this.game.status();
 				this.game.setOnMove(player1);
 			}
 		}
+	}
+	
+	private boolean isValidMove(Move move) {
+		for (Move possibleMove : this.game.possibleMoves()) {
+			if (move.getX() == possibleMove.getX() && move.getY() == possibleMove.getY()) return true;
+		}
+		return false;
 	}
 
 	@Override
