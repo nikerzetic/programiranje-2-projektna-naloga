@@ -25,12 +25,12 @@ public class PlayingCanvas extends JPanel implements MouseListener, MouseMotionL
 	Color blackColor = Color.BLACK;
 	Color whiteColor = Color.WHITE;
 	float edgeWidth = 2;
-	int stoneRadius = 5;
 	float lineWidth = 1;
 	
 	public PlayingCanvas(MainWindow master) {
 		
 		super();
+		this.master = master;
 		setBackground(Color.WHITE);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
@@ -39,7 +39,6 @@ public class PlayingCanvas extends JPanel implements MouseListener, MouseMotionL
 	
 	private int[] closestIntersection(int x, int y) {
 		
-		int vicinity = 10;
 		
 		int N = Game.getSize() + 1;
 		int height = this.getHeight();
@@ -47,16 +46,18 @@ public class PlayingCanvas extends JPanel implements MouseListener, MouseMotionL
 		int size = Math.min(height, width) / N;
 		int padX = (width - size * N) /2;
 		int padY = (height - size * N) /2;
+
+		int vicinity = size / 2;
 		
 		int leftLineX = (x - padX) / size - 1;
 		int rightLineX = leftLineX + 1;
 		int topLineY = (y - padY) / size - 1;
 		int bottomLineY = topLineY + 1;
 		
-		int leftX = leftLineX * size + padX;
-		int rightX = rightLineX * size + padX;
-		int topY = topLineY * size + padY;
-		int bottomY = bottomLineY * size + padY;
+		int leftX = (leftLineX + 1) * size + padX;
+		int rightX = (rightLineX + 1) * size + padX;
+		int topY = (topLineY + 1) * size + padY;
+		int bottomY = (bottomLineY + 1) * size + padY;
 		
 		double r1 = Math.sqrt(Math.pow(x - leftX, 2) + Math.pow(y - topY, 2));
 		double r2 = Math.sqrt(Math.pow(x - rightX, 2) + Math.pow(y - topY, 2));
@@ -89,6 +90,8 @@ public class PlayingCanvas extends JPanel implements MouseListener, MouseMotionL
 		int size = Math.min(height, width) / N;
 		int padX = (width - size * N) /2;
 		int padY = (height - size * N) /2;
+		
+		int stoneRadius = size / 3;
 
 		g.translate(padX, padY);
 
@@ -134,7 +137,6 @@ public class PlayingCanvas extends JPanel implements MouseListener, MouseMotionL
 		int x = e.getX();
 		int y = e.getY();
 		int intersection[] = closestIntersection(x, y);
-		System.out.println(master.getGame()); // game je null -> null pointer exception
 		if (intersection != null) master.click(intersection[0], intersection[1]);
 	}
 	

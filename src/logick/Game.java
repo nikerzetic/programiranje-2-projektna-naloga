@@ -91,15 +91,13 @@ public class Game {
 	}
 	
 	public void deleteDead() {
-		for (Chain chain : chains) if (isDead(chain)) deleteChain(chain);
+		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
+		for (Chain chain : chains) if (isDead(chain)) chainsToBeDeleted.add(chain);
+		chains.removeAll(chainsToBeDeleted);
 	}
 	
-	public boolean play(Move move) {
-		if (this.possibleMoves().contains(move)) {
-			grid[move.getX()][move.getY()] = onMove.getPlayerColor();
-			return true;
-		}
-		else return false;
+	public void play(Move move) {
+		grid[move.getX()][move.getY()] = onMove.getPlayerColor();
 	}
 	
 	public Status status() {

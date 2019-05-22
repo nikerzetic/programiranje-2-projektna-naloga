@@ -68,7 +68,7 @@ public class Minimax {
 	
 	public static int evaluatePosition (Game game, Player me) {
 		int evaluation = 0;
-		List<Chain> chains = game.getChains();
+		List<Chain> chains = Game.getChains();
 		for (Chain chain : chains) {
 			evaluation = evaluation + evaluateChain(chain, game, me);
 		}
