@@ -102,6 +102,7 @@ public class Game {
 		return StoneColor.EMPTY;
 	}
 
+	// to metodo bi lahko razbili na vec pomoznih funkcij
 	public void play(Move move) {
 		int x = move.getX();
 		int y = move.getY();
@@ -124,6 +125,10 @@ public class Game {
 						if (chain.getColor() == moveColor) chain.setStrength(chain.getStrength() + 1);
 						else chainsToBeDeleted.add(chain);
 					}
+					if (chain.getStrength() == 5) {
+						if (chain.getColor() == StoneColor.WHITE) this.status = Status.WHITE_WIN;
+						else if (chain.getColor() == StoneColor.BLACK) this.status = Status.BLACK_WIN;
+					}
 				}
 //				if (grid[xs[i]][ys[i]] == StoneColor.BLACK) black = true;
 //				else if (grid[xs[i]][ys[i]] == StoneColor.WHITE) white = true;
@@ -132,30 +137,12 @@ public class Game {
 		chains.removeAll(chainsToBeDeleted);
 	}
 	
+	// preveri, ali je izenaceno (ni vec praznega polja), ali vrne status
 	public Status status() {
-		// zbriše mrtve verige
-		// deleteDead();
-		// preveri, ce je kaksna veriga zmagovalna
-		for (Chain chain : chains) {
-			if (isWinning(chain)) {
-				switch (grid[chain.getXS()[0]][chain.getYS()[0]]) {
-				case BLACK: return Status.BLACK_WIN;
-				case WHITE: return Status.WHITE_WIN;
-				case EMPTY: assert false;
-				}
-			}
+		if (this.status == Status.WHITE_MOVE || this.status == Status.BLACK_MOVE) {
+			if (this.possibleMoves().isEmpty()) this.status = Status.DRAW;
 		}
-		// preveri, ce je se kako polje prazno in vrne igralca na potezi
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++) {
-				if (grid[x][y] == StoneColor.EMPTY) {
-					if (onMove.getPlayerColor() == StoneColor.BLACK) return Status.BLACK_MOVE;
-					else if (onMove.getPlayerColor() == StoneColor.WHITE) return Status.WHITE_MOVE;
-				}
-			}
-		}
-		// v primeru, da ni praznih polj in zmagovalne verige, vrne izenacen izid
-		return Status.DRAW;
+		return this.status;
 	}
 	
 	// doslednost
