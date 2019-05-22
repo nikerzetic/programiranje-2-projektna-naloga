@@ -85,6 +85,7 @@ public class MainWindow extends JFrame implements ActionListener{
 				this.repaintCanvas();
 				this.game.status();
 				this.game.setOnMove(player2);
+				this.game.setStatus(player2.getStatus());
 			}
 		}
 		else if (player2 == this.game.getOnMove() && player2.getHuman()) {

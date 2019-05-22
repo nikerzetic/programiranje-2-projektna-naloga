@@ -16,6 +16,8 @@ public class Game {
 	// igralec na potezi
 	private Player onMove;
 	
+	private Status status = Status.WHITE_MOVE;
+	
 	public Game() {
 		
 		grid = new StoneColor[size][size];
@@ -89,20 +91,50 @@ public class Game {
 		}
 		return (counter == 5);
 	}
-	
-	public void deleteDead() {
+
+	public StoneColor findStatus() {
 		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
-		for (Chain chain : chains) if (isDead(chain)) chainsToBeDeleted.add(chain);
+		for (Chain chain : chains) {
+			if (chain.getStrength() == 5) return chain.getColor();
+			else if (isDead(chain)) chainsToBeDeleted.add(chain);
+		}
 		chains.removeAll(chainsToBeDeleted);
+		return StoneColor.EMPTY;
 	}
-	
+
 	public void play(Move move) {
-		grid[move.getX()][move.getY()] = onMove.getPlayerColor();
+		int x = move.getX();
+		int y = move.getY();
+		StoneColor moveColor = onMove.getPlayerColor();
+		
+		grid[move.getX()][move.getY()] = moveColor;
+		
+		// za vsako verigo preveri, ali je mrtva in ji doloci moc
+		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
+		for (Chain chain : Game.chains) {
+			int[] xs = chain.getXS();
+			int[] ys = chain.getYS();
+			for (int i = 0; i < 5; i++) {
+				if (xs[i] == x && ys[i] == y) {
+					if (chain.getStrength() == 0) {
+						chain.setColor(moveColor);
+						chain.setStrength(1);
+					}
+					else if (chain.getStrength() >= 1) {
+						if (chain.getColor() == moveColor) chain.setStrength(chain.getStrength() + 1);
+						else chainsToBeDeleted.add(chain);
+					}
+				}
+//				if (grid[xs[i]][ys[i]] == StoneColor.BLACK) black = true;
+//				else if (grid[xs[i]][ys[i]] == StoneColor.WHITE) white = true;
+			}
+		}
+		chains.removeAll(chainsToBeDeleted);
 	}
 	
 	public Status status() {
 		// zbriše mrtve verige
-		deleteDead();
+		// deleteDead();
 		// preveri, ce je kaksna veriga zmagovalna
 		for (Chain chain : chains) {
 			if (isWinning(chain)) {
@@ -157,4 +189,11 @@ public class Game {
 		this.onMove = player;
 	}
 	
+	public Status getStatus() {
+		return this.status;
+	}
+	
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 }
