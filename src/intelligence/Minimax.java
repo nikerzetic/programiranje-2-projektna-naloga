@@ -14,8 +14,8 @@ public class Minimax {
 	
 	public static List<EvaluatedMove> EvaluateMove (Game game, int depth, Player me) {
 		List<EvaluatedMove> evaluatedMoves = new LinkedList<EvaluatedMove> ();
-		List<Move> PossibleMoves = game.possibleMoves();
-		for (Move move: PossibleMoves) {
+		List<Move> possibleMoves = game.possibleMoves();
+		for (Move move: possibleMoves) {
 			Game temporaryGame = new Game();
 			temporaryGame.play(move);
 			int evaluation = minimaxPosition (temporaryGame, depth - 1, me);
@@ -33,7 +33,7 @@ public class Minimax {
 		default:
 			if (depth == 0) {return evaluatePosition(game, me);}
 			List<EvaluatedMove> evaluatedMoves = EvaluateMove(game, depth, me);
-			if (game.onMove == me) {return maxEvaluation(evaluatedMoves);}
+			if (game.getOnMove() == me) {return maxEvaluation(evaluatedMoves);}
 			else {return minEvaluation(evaluatedMoves);}
 		}	
 	}
