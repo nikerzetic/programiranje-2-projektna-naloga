@@ -33,7 +33,7 @@ public class Minimax {
 		default:
 			if (depth == 0) {return evaluatePosition(game, me);}
 			List<EvaluatedMove> evaluatedMoves = EvaluateMove(game, depth, me);
-			if (game.onMove == me) {return maxEvaluation(evaluatedMoves);}
+			if (game.getOnMove() == me) {return maxEvaluation(evaluatedMoves);}
 			else {return minEvaluation(evaluatedMoves);}
 		}	
 	}
@@ -68,7 +68,7 @@ public class Minimax {
 	
 	public static int evaluatePosition (Game game, Player me) {
 		int evaluation = 0;
-		List<Chain> chains = game.getChains();
+		List<Chain> chains = Game.getChains();
 		for (Chain chain : chains) {
 			evaluation = evaluation + evaluateChain(chain, game, me);
 		}

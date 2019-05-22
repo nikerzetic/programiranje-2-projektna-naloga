@@ -1,19 +1,16 @@
 package logick;
 
-import gui.PlayingCanvas;
-
 public class ComputerPlayer extends Player {
 	
 	public ComputerPlayer(StoneColor color) {
 		
 		super(color);
+		human = false;
 		
 	}
 
-	@Override
-	public Move playMove(PlayingCanvas canvas) {
-		// TODO Auto-generated method stub
+	public Move playMove() {
 		return null;
 	}
-
+	
 }
