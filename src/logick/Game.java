@@ -14,7 +14,7 @@ public class Game {
 	private StoneColor[][] grid;
 	
 	// igralec na potezi
-	private Player onMove;
+	private Player onMove; // TODO ta spremenljivka je najbrz neuporabna, ker lahko, kdo je na potezi, dolocimo iz statusa
 	
 	private Status status = Status.WHITE_MOVE;
 	
@@ -102,7 +102,7 @@ public class Game {
 		return StoneColor.EMPTY;
 	}
 
-	// to metodo bi lahko razbili na vec pomoznih funkcij
+	// TODO to metodo bi lahko razbili na vec pomoznih funkcij
 	public void play(Move move) {
 		int x = move.getX();
 		int y = move.getY();
