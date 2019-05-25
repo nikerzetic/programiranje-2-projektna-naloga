@@ -117,6 +117,10 @@ public class Game {
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
 				if (grid[x][y] == StoneColor.EMPTY) {
+					// tuakaj ne vem zakaj more biti glih obratno, ampak tako je prav. Lahko se ti kaj popravis, ker jest ne dojamem
+					// zakaj je narobe, ce mas: if (onMove.getPlayerColor() == StoneColor.BLACK) return Status.BLACK_MOVE;, potem je vse
+					// glih obratno, npr. je bel kamencek na plosci, pa ves da more biti zdaj crn na vrsti, pa pise da je bel na vrsti.
+					// Pomoje je nekaj narobe z metodo click v MainWindow
 					if (onMove.getPlayerColor() == StoneColor.BLACK) return Status.BLACK_MOVE;
 					else if (onMove.getPlayerColor() == StoneColor.WHITE) return Status.WHITE_MOVE;
 				}
