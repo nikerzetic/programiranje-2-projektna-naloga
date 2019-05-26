@@ -24,7 +24,7 @@ public class MainWindow extends JFrame implements ActionListener{
 	private Player player1;
 	private Player player2;
 	
-	private JLabel status;
+	private JLabel status_label;
 	
 	private JMenuItem gameComputerHuman;
 	private JMenuItem gameHumanComputer;
@@ -43,23 +43,21 @@ public class MainWindow extends JFrame implements ActionListener{
 		
 		this.setLayout(new GridBagLayout());
 		
-		gameComputerHuman = new JMenuItem("Raèunalnik proti èloveku");
+		gameComputerHuman = new JMenuItem("Racunalnik proti cloveku");
 		gameMenu.add(gameComputerHuman);
 		gameComputerHuman.addActionListener(this);
 		
-		gameHumanComputer = new JMenuItem("Èlovek proti raèunalniku");
+		gameHumanComputer = new JMenuItem("Clovek proti racunalniku");
 		gameMenu.add(gameHumanComputer);
 		gameHumanComputer.addActionListener(this);
 		
-		gameComputerComputer = new JMenuItem("Raèunalnik proti raèunalniku");
+		gameComputerComputer = new JMenuItem("Racunalnik proti racunalniku");
 		gameMenu.add(gameComputerComputer);
 		gameComputerComputer.addActionListener(this);
 
-		gameHumanHuman = new JMenuItem("Èlovek proti èloveku");
+		gameHumanHuman = new JMenuItem("Clovek proti cloveku");
 		gameMenu.add(gameHumanHuman);
 		gameHumanHuman.addActionListener(this);
-		
-		newGame(new HumanPlayer(StoneColor.WHITE), new HumanPlayer(StoneColor.BLACK));
 		
 		canvas = new PlayingCanvas(this);
 		GridBagConstraints canvas_layout = new GridBagConstraints();
@@ -71,13 +69,17 @@ public class MainWindow extends JFrame implements ActionListener{
 		getContentPane().add(canvas, canvas_layout);
 		
 		//label vrstica
-		status = new JLabel();
-		status.setFont(new Font(status.getFont().getName(), status.getFont().getStyle(), 20));
-		GridBagConstraints status_layout = new GridBagConstraints();
-		status_layout.gridx = 0;
-		status_layout.gridy = 1;
-		status_layout.anchor = GridBagConstraints.CENTER;
-		getContentPane().add(status, status_layout);
+		status_label = new JLabel();
+		status_label.setFont(new Font(status_label.getFont().getName(), status_label.getFont().getStyle(), 20));
+		GridBagConstraints status_label_layout = new GridBagConstraints();
+		status_label_layout.gridx = 0;
+		status_label_layout.gridy = 1;
+		status_label_layout.anchor = GridBagConstraints.CENTER;
+		getContentPane().add(status_label, status_label_layout);
+		
+		newGame(new HumanPlayer(StoneColor.WHITE), new HumanPlayer(StoneColor.BLACK));
+
+		this.repaintCanvas();
 		
 	}
 	
@@ -87,24 +89,22 @@ public class MainWindow extends JFrame implements ActionListener{
 		this.player1 = player1;
 		this.player2 = player2;
 		
-		this.game.setOnMove(player1);
-		repaint();
+		this.game.setStatus(Status.WHITE_MOVE);
+		this.repaintCanvas();
 	}
 	
 	public void repaintCanvas() {
 		if (game == null) {
-			status.setText("The game is not in progress");
+			this.status_label.setText("Igra ni v teku.");
 		}
 		else {
-			switch(game.status()) {
-			case BLACK_MOVE: status.setText("Black is on the move"); break;
-			case WHITE_MOVE: status.setText("White is on the move"); break;
-			case BLACK_WIN: status.setText("Black is the winner!"); break;
-			case WHITE_WIN: status.setText("White is the winner!"); break;
-			case DRAW: status.setText("Draw!"); break;
-			}
+			if (this.game.getStatus() == Status.DRAW) this.status_label.setText("Izenacenje.");
+			else if (this.game.getStatus() == Status.WHITE_MOVE) this.status_label.setText("Beli igralec je na potezi.");
+			else if (this.game.getStatus() == Status.BLACK_MOVE) this.status_label.setText("Crni igralec je na potezi.");
+			else if (this.game.getStatus() == Status.WHITE_WIN) this.status_label.setText("Beli igralec je zmagal.");
+			else if (this.game.getStatus() == Status.BLACK_WIN) this.status_label.setText("Crni igralec je zmagal.");
 		}
-		canvas.repaint();
+		this.repaint();
 	}
 	
 	public void playMove(Move move) {
@@ -117,23 +117,22 @@ public class MainWindow extends JFrame implements ActionListener{
 			// preveri, ce je poteza veljavna, in spremeni barvo polja + osvezi platno + postavi drugega igralca na vrsto
 			if (this.isValidMove(move)) {
 				game.play(move);
-				this.repaintCanvas();
 				this.game.status();
 				this.game.setOnMove(player2); // TODO neuporbano v novi verziji
 				if (this.game.getStatus() == Status.WHITE_MOVE) this.game.setStatus(Status.BLACK_MOVE);
+				this.repaintCanvas();
 			}
 		}
 		else if (this.game.getStatus() == Status.BLACK_MOVE && player2.getHuman()) {
 			// preveri, ce je poteza veljavna, in spremeni barvo polja + osvezi platno + postavi drugega igralca na vrsto
 			if (this.isValidMove(move)) {
 				game.play(move);
-				this.repaintCanvas();
 				this.game.status();
 				this.game.setOnMove(player1); // TODO neuporabno v novi verziji
 				if (this.game.getStatus() == Status.BLACK_MOVE) this.game.setStatus(Status.WHITE_MOVE);
+				this.repaintCanvas();
 			}
 		}
-		System.out.println(this.game.getStatus());
 	}
 	
 	private boolean isValidMove(Move move) {

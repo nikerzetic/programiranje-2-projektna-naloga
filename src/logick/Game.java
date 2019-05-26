@@ -82,6 +82,7 @@ public class Game {
 	
 	// preveri, ali je veriga zmagovalna
 	// ne preveri, ali so vsi kamencki iste barve
+	// TODO neuporabna metoda
 	private boolean isWinning(Chain chain) {
 		int counter = 0;
 		int[] xs = chain.getXS();
@@ -106,7 +107,10 @@ public class Game {
 	public void play(Move move) {
 		int x = move.getX();
 		int y = move.getY();
-		StoneColor moveColor = onMove.getPlayerColor();
+		StoneColor moveColor = StoneColor.EMPTY;
+		
+		if (this.getStatus() == Status.WHITE_MOVE) moveColor = StoneColor.WHITE;
+		else if (this.getStatus() == Status.BLACK_MOVE) moveColor = StoneColor.BLACK;
 		
 		grid[move.getX()][move.getY()] = moveColor;
 		
