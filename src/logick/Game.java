@@ -14,7 +14,9 @@ public class Game {
 	private StoneColor[][] grid;
 	
 	// igralec na potezi
-	private Player onMove;
+	private Player onMove; // TODO ta spremenljivka je najbrz neuporabna, ker lahko, kdo je na potezi, dolocimo iz statusa
+	
+	private Status status = Status.WHITE_MOVE;
 	
 	public Game() {
 		
@@ -89,45 +91,58 @@ public class Game {
 		}
 		return (counter == 5);
 	}
-	
-	public void deleteDead() {
+
+	public StoneColor findStatus() {
 		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
-		for (Chain chain : chains) if (isDead(chain)) chainsToBeDeleted.add(chain);
+		for (Chain chain : chains) {
+			if (chain.getStrength() == 5) return chain.getColor();
+			else if (isDead(chain)) chainsToBeDeleted.add(chain);
+		}
+		chains.removeAll(chainsToBeDeleted);
+		return StoneColor.EMPTY;
+	}
+
+	// TODO to metodo bi lahko razbili na vec pomoznih funkcij
+	public void play(Move move) {
+		int x = move.getX();
+		int y = move.getY();
+		StoneColor moveColor = onMove.getPlayerColor();
+		
+		grid[move.getX()][move.getY()] = moveColor;
+		
+		// za vsako verigo preveri, ali je mrtva in ji doloci moc
+		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
+		for (Chain chain : Game.chains) {
+			int[] xs = chain.getXS();
+			int[] ys = chain.getYS();
+			for (int i = 0; i < 5; i++) {
+				if (xs[i] == x && ys[i] == y) {
+					if (chain.getStrength() == 0) {
+						chain.setColor(moveColor);
+						chain.setStrength(1);
+					}
+					else if (chain.getStrength() >= 1) {
+						if (chain.getColor() == moveColor) chain.setStrength(chain.getStrength() + 1);
+						else chainsToBeDeleted.add(chain);
+					}
+					if (chain.getStrength() == 5) {
+						if (chain.getColor() == StoneColor.WHITE) this.status = Status.WHITE_WIN;
+						else if (chain.getColor() == StoneColor.BLACK) this.status = Status.BLACK_WIN;
+					}
+				}
+//				if (grid[xs[i]][ys[i]] == StoneColor.BLACK) black = true;
+//				else if (grid[xs[i]][ys[i]] == StoneColor.WHITE) white = true;
+			}
+		}
 		chains.removeAll(chainsToBeDeleted);
 	}
 	
-	public void play(Move move) {
-		grid[move.getX()][move.getY()] = onMove.getPlayerColor();
-	}
-	
+	// preveri, ali je izenaceno (ni vec praznega polja), ali vrne status
 	public Status status() {
-		// zbriše mrtve verige
-		deleteDead();
-		// preveri, ce je kaksna veriga zmagovalna
-		for (Chain chain : chains) {
-			if (isWinning(chain)) {
-				switch (grid[chain.getXS()[0]][chain.getYS()[0]]) {
-				case BLACK: return Status.BLACK_WIN;
-				case WHITE: return Status.WHITE_WIN;
-				case EMPTY: assert false;
-				}
-			}
+		if (this.status == Status.WHITE_MOVE || this.status == Status.BLACK_MOVE) {
+			if (this.possibleMoves().isEmpty()) this.status = Status.DRAW;
 		}
-		// preveri, ce je se kako polje prazno in vrne igralca na potezi
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++) {
-				if (grid[x][y] == StoneColor.EMPTY) {
-					// tuakaj ne vem zakaj more biti glih obratno, ampak tako je prav. Lahko se ti kaj popravis, ker jest ne dojamem
-					// zakaj je narobe, ce mas: if (onMove.getPlayerColor() == StoneColor.BLACK) return Status.BLACK_MOVE;, potem je vse
-					// glih obratno, npr. je bel kamencek na plosci, pa ves da more biti zdaj crn na vrsti, pa pise da je bel na vrsti.
-					// Pomoje je nekaj narobe z metodo click v MainWindow
-					if (onMove.getPlayerColor() == StoneColor.BLACK) return Status.BLACK_MOVE;
-					else if (onMove.getPlayerColor() == StoneColor.WHITE) return Status.WHITE_MOVE;
-				}
-			}
-		}
-		// v primeru, da ni praznih polj in zmagovalne verige, vrne izenacen izid
-		return Status.DRAW;
+		return this.status;
 	}
 	
 	// doslednost
@@ -161,4 +176,11 @@ public class Game {
 		this.onMove = player;
 	}
 	
+	public Status getStatus() {
+		return this.status;
+	}
+	
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 }

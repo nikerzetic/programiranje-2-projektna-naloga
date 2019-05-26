@@ -30,4 +30,9 @@ public abstract class Player {
 		return "Player(" + this.playerColor +"); This is a human player: " + this.human;
 	}
 	
+	public Status getStatus() {
+		if (this.playerColor == StoneColor.WHITE) return Status.WHITE_MOVE;
+		else if (this.playerColor == StoneColor.BLACK) return Status.BLACK_MOVE;
+		return Status.DRAW; // se ne more zgoditi
+	}
 }

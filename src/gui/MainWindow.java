@@ -113,26 +113,27 @@ public class MainWindow extends JFrame implements ActionListener{
 	
 	public void click(int x, int y) {
 		Move move = new Move(x, y);
-		if (player1 == this.game.getOnMove() && player1.getHuman()) {
+		if (this.game.getStatus() == Status.WHITE_MOVE && player1.getHuman()) {
 			// preveri, ce je poteza veljavna, in spremeni barvo polja + osvezi platno + postavi drugega igralca na vrsto
 			if (this.isValidMove(move)) {
-				System.out.println(this.game.getOnMove() + " " + x + " " + y);
 				game.play(move);
 				this.repaintCanvas();
 				this.game.status();
-				this.game.setOnMove(player2);
+				this.game.setOnMove(player2); // TODO neuporbano v novi verziji
+				if (this.game.getStatus() == Status.WHITE_MOVE) this.game.setStatus(Status.BLACK_MOVE);
 			}
 		}
-		else if (player2 == this.game.getOnMove() && player2.getHuman()) {
+		else if (this.game.getStatus() == Status.BLACK_MOVE && player2.getHuman()) {
 			// preveri, ce je poteza veljavna, in spremeni barvo polja + osvezi platno + postavi drugega igralca na vrsto
 			if (this.isValidMove(move)) {
-				System.out.println(this.game.getOnMove() + " " + x + " " + y);
 				game.play(move);
 				this.repaintCanvas();
 				this.game.status();
-				this.game.setOnMove(player1);
+				this.game.setOnMove(player1); // TODO neuporabno v novi verziji
+				if (this.game.getStatus() == Status.BLACK_MOVE) this.game.setStatus(Status.WHITE_MOVE);
 			}
 		}
+		System.out.println(this.game.getStatus());
 	}
 	
 	private boolean isValidMove(Move move) {

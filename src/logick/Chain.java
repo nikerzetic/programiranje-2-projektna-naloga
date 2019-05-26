@@ -2,7 +2,9 @@ package logick;
 
 public class Chain {
 	
-	public boolean alive = true; 
+	private StoneColor chainColor = StoneColor.EMPTY;
+	private int strength = 0;
+	
 	// this value turns to false when two or more intersections are covered with stones of different colours 
 	// (have values of BLACK and WHITE)
 	// alternatively: the Chain could be deleted from the list, once it cannot form a winning combination
@@ -25,11 +27,26 @@ public class Chain {
 	}
 	
 	public int[] getXS() {
-		return xs;
+		return this.xs;
 	}
 
 	public int[] getYS() {
-		return ys;
+		return this.ys;
 	}
 	
+	public int getStrength() {
+		return this.strength;
+	}
+	
+	public void setStrength(int strength) {
+		this.strength = strength;
+	}
+	
+	public StoneColor getColor() {
+		return this.chainColor;
+	}
+	
+	public void setColor(StoneColor color) {
+		this.chainColor = color;
+	}
 }
