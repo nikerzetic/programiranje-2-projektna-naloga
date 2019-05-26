@@ -20,7 +20,8 @@ public class PlayingCanvas extends JPanel implements MouseListener, MouseMotionL
 	private MainWindow master; // tu izvira problem
 	
 	Color lineColor = Color.DARK_GRAY;
-	Color backgroundColor = Color.LIGHT_GRAY;
+	Color backgroundColor = new Color(85, 91, 105);
+	Color boardColor = new Color(240, 218, 127);
 	Color edgeColor = Color.BLACK;
 	Color blackColor = Color.BLACK;
 	Color whiteColor = Color.WHITE;
@@ -94,6 +95,9 @@ public class PlayingCanvas extends JPanel implements MouseListener, MouseMotionL
 		int stoneRadius = size / 3;
 
 		g.translate(padX, padY);
+		
+		g.setColor(boardColor);
+		g.fillRect(0, 0, N * size, N * size);
 
 		g.setColor(edgeColor);
 		g2.setStroke(new BasicStroke(edgeWidth));
