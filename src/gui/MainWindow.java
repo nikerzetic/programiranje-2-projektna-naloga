@@ -1,9 +1,13 @@
 package gui;
 
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -20,6 +24,8 @@ public class MainWindow extends JFrame implements ActionListener{
 	private Player player1;
 	private Player player2;
 	
+	private JLabel status;
+	
 	private JMenuItem gameComputerHuman;
 	private JMenuItem gameHumanComputer;
 	private JMenuItem gameComputerComputer;
@@ -34,6 +40,8 @@ public class MainWindow extends JFrame implements ActionListener{
 		setJMenuBar(mainMenu);
 		JMenu gameMenu = new JMenu("Nova igra");
 		mainMenu.add(gameMenu);
+		
+		this.setLayout(new GridBagLayout());
 		
 		gameComputerHuman = new JMenuItem("Raèunalnik proti èloveku");
 		gameMenu.add(gameComputerHuman);
@@ -51,10 +59,25 @@ public class MainWindow extends JFrame implements ActionListener{
 		gameMenu.add(gameHumanHuman);
 		gameHumanHuman.addActionListener(this);
 		
-		newGame(new HumanPlayer(StoneColor.WHITE), new ComputerPlayer(StoneColor.BLACK));
+		newGame(new HumanPlayer(StoneColor.WHITE), new HumanPlayer(StoneColor.BLACK));
 		
 		canvas = new PlayingCanvas(this);
-		add(canvas);
+		GridBagConstraints canvas_layout = new GridBagConstraints();
+		canvas_layout.gridx = 0;
+		canvas_layout.gridy = 0;
+		canvas_layout.fill = GridBagConstraints.BOTH;
+		canvas_layout.weightx = 1.0;
+		canvas_layout.weighty = 1.0;
+		getContentPane().add(canvas, canvas_layout);
+		
+		//label vrstica
+		status = new JLabel();
+		status.setFont(new Font(status.getFont().getName(), status.getFont().getStyle(), 20));
+		GridBagConstraints status_layout = new GridBagConstraints();
+		status_layout.gridx = 0;
+		status_layout.gridy = 1;
+		status_layout.anchor = GridBagConstraints.CENTER;
+		getContentPane().add(status, status_layout);
 		
 	}
 	
@@ -65,9 +88,22 @@ public class MainWindow extends JFrame implements ActionListener{
 		this.player2 = player2;
 		
 		this.game.setOnMove(player1);
+		repaint();
 	}
 	
 	public void repaintCanvas() {
+		if (game == null) {
+			status.setText("The game is not in progress");
+		}
+		else {
+			switch(game.status()) {
+			case BLACK_MOVE: status.setText("Black is on the move"); break;
+			case WHITE_MOVE: status.setText("White is on the move"); break;
+			case BLACK_WIN: status.setText("Black is the winner!"); break;
+			case WHITE_WIN: status.setText("White is the winner!"); break;
+			case DRAW: status.setText("Draw!"); break;
+			}
+		}
 		canvas.repaint();
 	}
 	
