@@ -9,4 +9,11 @@ public class HumanPlayer extends Player {
 		
 	}
 
+	@Override
+	public Move playYourMove() {
+		return null;
+	}
+	
+	
+
 }

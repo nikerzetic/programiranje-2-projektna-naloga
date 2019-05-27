@@ -14,6 +14,8 @@ public abstract class Player {
 		
 	}
 	
+	public abstract Move playYourMove();
+	
 	public void setPlayerColor(StoneColor color) {
 		this.playerColor = color;
 	}
