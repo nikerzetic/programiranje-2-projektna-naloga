@@ -33,7 +33,8 @@ public class MainWindow extends JFrame implements ActionListener{
 	
 	public MainWindow() {
 		
-		setTitle("Gomoku");
+		this.setTitle("Gomoku");
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		// glavni meni
 		JMenuBar mainMenu = new JMenuBar();
@@ -43,6 +44,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		
 		this.setLayout(new GridBagLayout());
 		
+		// moznosti v meniju
 		gameComputerHuman = new JMenuItem("Racunalnik proti cloveku");
 		gameMenu.add(gameComputerHuman);
 		gameComputerHuman.addActionListener(this);
@@ -59,6 +61,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		gameMenu.add(gameHumanHuman);
 		gameHumanHuman.addActionListener(this);
 		
+		// igralno polje
 		canvas = new PlayingCanvas(this);
 		GridBagConstraints canvas_layout = new GridBagConstraints();
 		canvas_layout.gridx = 0;
@@ -68,7 +71,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		canvas_layout.weighty = 1.0;
 		getContentPane().add(canvas, canvas_layout);
 		
-		//label vrstica
+		// vrstica, ki opisuje stanje igre
 		status_label = new JLabel();
 		status_label.setFont(new Font(status_label.getFont().getName(), status_label.getFont().getStyle(), 20));
 		GridBagConstraints status_label_layout = new GridBagConstraints();
@@ -77,12 +80,12 @@ public class MainWindow extends JFrame implements ActionListener{
 		status_label_layout.anchor = GridBagConstraints.CENTER;
 		getContentPane().add(status_label, status_label_layout);
 		
+		// zacnemo novo igro
 		newGame(new HumanPlayer(StoneColor.WHITE), new HumanPlayer(StoneColor.BLACK));
-
-		this.repaintCanvas();
 		
 	}
 	
+	// metoda za zacetek noove igre
 	public void newGame(Player player1, Player player2) {
 		this.game = new Game();
 		
@@ -93,6 +96,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		this.repaintCanvas();
 	}
 	
+	// metoda, ki znova izrise elemente v oknu
 	public void repaintCanvas() {
 		if (game == null) {
 			this.status_label.setText("Igra ni v teku.");
@@ -107,10 +111,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		this.repaint();
 	}
 	
-	public void playMove(Move move) {
-		
-	}
-	
+	// metoda, ki jo platno poklice ob kliku
 	public void click(int x, int y) {
 		Move move = new Move(x, y);
 		if (this.game.getStatus() == Status.WHITE_MOVE && player1.getHuman()) {

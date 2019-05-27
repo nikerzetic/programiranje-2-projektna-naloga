@@ -9,7 +9,10 @@ public class ComputerPlayer extends Player {
 		
 	}
 
-	public Move playMove() {
+	@Override
+	public Move playYourMove() {
+		
+		
 		return null;
 	}
 	
