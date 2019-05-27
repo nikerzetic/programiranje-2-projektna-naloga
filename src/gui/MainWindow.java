@@ -89,7 +89,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		this.player1 = player1;
 		this.player2 = player2;
 		
-		this.game.setStatus(Status.WHITE_MOVE);
+		this.game.setStatus(Status.BLACK_MOVE);
 		this.repaintCanvas();
 	}
 	
