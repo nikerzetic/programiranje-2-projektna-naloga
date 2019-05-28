@@ -1,4 +1,4 @@
-# Računalniška igra še brez imena in zasnove
+# Gomoku - pet v vrsto
 
 ### Programiranje 2: Projektna naloga
 
