@@ -81,19 +81,23 @@ public class MainWindow extends JFrame implements ActionListener{
 		getContentPane().add(status_label, status_label_layout);
 		
 		// zacnemo novo igro
-		newGame(new HumanPlayer(StoneColor.WHITE), new HumanPlayer(StoneColor.BLACK));
+		newGame(new HumanPlayer(this, StoneColor.BLACK), new HumanPlayer(this, StoneColor.WHITE));
 		
 	}
 	
 	// metoda za zacetek noove igre
 	public void newGame(Player player1, Player player2) {
+		System.out.println("New game");
 		this.game = new Game();
 		
 		this.player1 = player1;
 		this.player2 = player2;
 		
+		this.game.setOnMove(player1);
 		this.game.setStatus(Status.BLACK_MOVE);
 		this.repaintCanvas();
+		
+		this.player1.playYourMove();
 	}
 	
 	// metoda, ki znova izrise elemente v oknu
@@ -112,25 +116,19 @@ public class MainWindow extends JFrame implements ActionListener{
 	}
 	
 	// metoda, ki jo platno poklice ob kliku
+	// TODO poenostavljenje na en blo kode
 	public void click(int x, int y) {
 		Move move = new Move(x, y);
-		if (this.game.getStatus() == Status.WHITE_MOVE && player1.getHuman()) {
+		if (this.game.getOnMove().getHuman()) {
 			// preveri, ce je poteza veljavna, in spremeni barvo polja + osvezi platno + postavi drugega igralca na vrsto
 			if (this.isValidMove(move)) {
 				game.play(move);
 				this.game.status();
-				this.game.setOnMove(player2); // TODO neuporbano v novi verziji
-				if (this.game.getStatus() == Status.WHITE_MOVE) this.game.setStatus(Status.BLACK_MOVE);
-				this.repaintCanvas();
-			}
-		}
-		else if (this.game.getStatus() == Status.BLACK_MOVE && player2.getHuman()) {
-			// preveri, ce je poteza veljavna, in spremeni barvo polja + osvezi platno + postavi drugega igralca na vrsto
-			if (this.isValidMove(move)) {
-				game.play(move);
-				this.game.status();
-				this.game.setOnMove(player1); // TODO neuporabno v novi verziji
-				if (this.game.getStatus() == Status.BLACK_MOVE) this.game.setStatus(Status.WHITE_MOVE);
+				this.game.setOnMove(this.oponent());
+				if (this.game.getStatus() == Status.WHITE_MOVE || this.game.getStatus() == Status.BLACK_MOVE) {
+						this.game.setStatus(this.newStatus());
+					}
+				this.game.getOnMove().playYourMove();
 				this.repaintCanvas();
 			}
 		}
@@ -142,29 +140,52 @@ public class MainWindow extends JFrame implements ActionListener{
 		}
 		return false;
 	}
+	
+//	private void mainLoop() {
+//		while(true) {
+//			if (this.game.getOnMove().getHuman()) {
+//				Thread.yield();
+//			}
+//			else {
+//				this.game.play(this.game.getOnMove().playYourMove());
+//			}
+//		}
+//	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
 
 		Object source = event.getSource();
 		if (source == gameComputerHuman) {
-			newGame(new ComputerPlayer(StoneColor.WHITE), new HumanPlayer(StoneColor.BLACK));
+			newGame(new ComputerPlayer(this, StoneColor.BLACK), new HumanPlayer(this, StoneColor.WHITE));
 		}
 		
 		if (source == gameHumanComputer) {
-			newGame(new HumanPlayer(StoneColor.WHITE), new ComputerPlayer(StoneColor.BLACK));
+			newGame(new HumanPlayer(this, StoneColor.BLACK), new ComputerPlayer(this, StoneColor.WHITE));
 		}
 		
 		if (source == gameComputerComputer) {
-			newGame(new ComputerPlayer(StoneColor.WHITE), new ComputerPlayer(StoneColor.BLACK));
+			newGame(new ComputerPlayer(this, StoneColor.BLACK), new ComputerPlayer(this, StoneColor.WHITE));
 		}
 		
 		if (source == gameHumanHuman) {
-			newGame(new HumanPlayer(StoneColor.WHITE), new HumanPlayer(StoneColor.BLACK));
+			newGame(new HumanPlayer(this, StoneColor.BLACK), new HumanPlayer(this, StoneColor.WHITE));
 		}
 		
 	}
 	
+	
+	public Player oponent() {
+		return (this.game.getOnMove() == this.player1) ? this.player2 : this.player1;
+	}
+	
+	public Status newStatus() {
+		if (this.game.getStatus() == Status.BLACK_MOVE) return Status.WHITE_MOVE;
+		else if (this.game.getStatus() == Status.WHITE_MOVE) return Status.BLACK_MOVE;
+		else return this.game.getStatus();
+	}
+	
+	// get in set metode
 	public Game getGame() {
 		return game;
 	}

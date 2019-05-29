@@ -8,7 +8,7 @@ public class Game {
 	private static int size = 15;
 	
 	// seznam vseh moznih verig na plosci
-	private static List<Chain> chains = new LinkedList<Chain>();
+	private List<Chain> chains = new LinkedList<Chain>();
 	
 	// matrika vseh presecisc
 	private StoneColor[][] grid;
@@ -16,7 +16,7 @@ public class Game {
 	// igralec na potezi
 	private Player onMove; // TODO ta spremenljivka je najbrz neuporabna, ker lahko, kdo je na potezi, dolocimo iz statusa
 	
-	private Status status = Status.WHITE_MOVE;
+	private Status status = Status.BLACK_MOVE;
 	
 	public Game() {
 		
@@ -116,7 +116,7 @@ public class Game {
 		
 		// za vsako verigo preveri, ali je mrtva in ji doloci moc
 		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
-		for (Chain chain : Game.chains) {
+		for (Chain chain : this.chains) {
 			int[] xs = chain.getXS();
 			int[] ys = chain.getYS();
 			for (int i = 0; i < 5; i++) {
@@ -148,7 +148,7 @@ public class Game {
 		}
 		return this.status;
 	}
-	
+
 	// doslednost
 	// A.K.A. get in set metode
 	
@@ -160,8 +160,8 @@ public class Game {
 		size = n;
 	}
 	
-	public static List<Chain> getChains() {
-		return chains;
+	public List<Chain> getChains() {
+		return this.chains;
 	}
 	
 	public StoneColor[][] getGrid() {

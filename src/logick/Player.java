@@ -1,5 +1,7 @@
 package logick;
 
+import gui.MainWindow;
+
 // Player je razred, ki zna dolociti, ali je igralec na potezi in v primeru racunalnika odigrati potezo. Lahko je ComputerPlayer ali HumanPlayer
 
 public abstract class Player {
@@ -8,13 +10,16 @@ public abstract class Player {
 	
 	protected boolean human;
 	
-	public Player(StoneColor color) {
+	protected MainWindow master;
+	
+	public Player(MainWindow master, StoneColor color) {
 		
-		playerColor = color;
+		this.master = master;
+		this.playerColor = color;
 		
 	}
 	
-	public abstract Move playYourMove();
+	public abstract void playYourMove();
 	
 	public void setPlayerColor(StoneColor color) {
 		this.playerColor = color;
@@ -29,7 +34,7 @@ public abstract class Player {
 	}
 	
 	public String toString() {
-		return "Player(" + this.playerColor +"); This is a human player: " + this.human;
+		return "Player(" + this.playerColor +")";
 	}
 	
 	public Status getStatus() {

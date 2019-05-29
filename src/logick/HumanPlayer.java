@@ -1,18 +1,18 @@
 package logick;
 
+import gui.MainWindow;
+
 public class HumanPlayer extends Player {
 	
-	public HumanPlayer(StoneColor color) {
+	public HumanPlayer(MainWindow master, StoneColor color) {
 		
-		super(color);
+		super(master, color);
 		this.human = true;
 		
 	}
 
 	@Override
-	public Move playYourMove() {
-		return null;
-	}
+	public void playYourMove() {}
 	
 	
 
