@@ -76,16 +76,8 @@ public class Minimax {
 	}
 	
 	public static int evaluateChain(Chain chain, Game game, Player player) {
-		StoneColor[][] grid = game.getGrid();
-		int points = 0;
-		int[] xs = chain.getXS();
-		int[] ys = chain.getYS();
-		for (int i = 0; i < 5; i++) {
-			//ker imava list vrst vsebuje samo vrste s crnimi ali belimi kamencki
-			if (grid[xs[i]][ys[i]] == player.getPlayerColor())
-				points++;
-		}
-		return points;
+		if (chain.getColor() == player.getPlayerColor()) return chain.getStrength();
+		else return -chain.getStrength();
 	}
 	
 }
