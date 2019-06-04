@@ -46,17 +46,17 @@ public class Minimax {
 		return max;
 	}
 	
-//	public static Move maxMove(List<EvaluatedMove> evaluatedMoves) {
-//		int max = Lose;
-//		Move move = null;
-//		for (EvaluatedMove evaluatedMove: evaluatedMoves) {
-//			if (evaluatedMove.value >= max) {
-//				max = evaluatedMove.value;
-//				move = evaluatedMove.move;	
-//			}
-//		}
-//		return move;
-//	}
+	public static Move maxMove(List<EvaluatedMove> evaluatedMoves) {
+		int max = Lose;
+		Move move = null;
+		for (EvaluatedMove evaluatedMove: evaluatedMoves) {
+			if (evaluatedMove.value >= max) {
+				max = evaluatedMove.value;
+				move = evaluatedMove.move;	
+			}
+		}
+		return move;
+	}
 	
 	public static int minEvaluation (List<EvaluatedMove> evaluatedMoves) {
 		int min = Win;
@@ -68,7 +68,7 @@ public class Minimax {
 	
 	public static int evaluatePosition (Game game, Player player) {
 		int evaluation = 0;
-		List<Chain> chains = Game.getChains();
+		List<Chain> chains = game.getChains();
 		for (Chain chain : chains) {
 			evaluation = evaluation + evaluateChain(chain, game, player);
 		}

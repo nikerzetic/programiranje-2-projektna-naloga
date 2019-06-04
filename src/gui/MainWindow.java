@@ -128,8 +128,8 @@ public class MainWindow extends JFrame implements ActionListener{
 				if (this.game.getStatus() == Status.WHITE_MOVE || this.game.getStatus() == Status.BLACK_MOVE) {
 						this.game.setStatus(this.newStatus());
 					}
-				this.game.getOnMove().playYourMove();
 				this.repaintCanvas();
+				this.game.getOnMove().playYourMove();
 			}
 		}
 	}
