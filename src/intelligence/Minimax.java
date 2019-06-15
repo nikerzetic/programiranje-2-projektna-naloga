@@ -16,7 +16,7 @@ public class Minimax {
 		List<EvaluatedMove> evaluatedMoves = new LinkedList<EvaluatedMove> ();
 		List<Move> possibleMoves = game.possibleMoves();
 		for (Move move: possibleMoves) {
-			Game temporaryGame = new Game();
+			Game temporaryGame = new Game(game);
 			temporaryGame.play(move);
 			int evaluation = minimaxPosition (temporaryGame, depth - 1, player);
 			evaluatedMoves.add(new EvaluatedMove(move, evaluation));
@@ -31,17 +31,17 @@ public class Minimax {
 		case WHITE_WIN: return (player.getPlayerColor() == StoneColor.WHITE ? Win: Lose);
 		case DRAW: return Draw;
 		default:
-			if (depth == 0) {return evaluatePosition(game, player);}
+			if (depth == 0) return evaluatePosition(game, player);
 			List<EvaluatedMove> evaluatedMoves = evaluateMove(game, depth, player);
-			if (game.getOnMove() == player) {return maxEvaluation(evaluatedMoves);}
-			else {return minEvaluation(evaluatedMoves);}
+			if (game.getOnMove() == player) return maxEvaluation(evaluatedMoves);
+			else return minEvaluation(evaluatedMoves);
 		}	
 	}
 	
 	public static int maxEvaluation (List<EvaluatedMove> evaluatedMoves) {
 		int max = Lose;
 		for (EvaluatedMove evaluatedMove: evaluatedMoves) {
-			if(evaluatedMove.value > max) {max = evaluatedMove.value;}
+			if(evaluatedMove.getValue() > max) {max = evaluatedMove.getValue();}
 		}
 		return max;
 	}
@@ -50,9 +50,9 @@ public class Minimax {
 		int max = Lose;
 		Move move = null;
 		for (EvaluatedMove evaluatedMove: evaluatedMoves) {
-			if (evaluatedMove.value >= max) {
-				max = evaluatedMove.value;
-				move = evaluatedMove.move;	
+			if (evaluatedMove.getValue() >= max) {
+				max = evaluatedMove.getValue();
+				move = evaluatedMove.getMove();	
 			}
 		}
 		return move;
@@ -61,7 +61,7 @@ public class Minimax {
 	public static int minEvaluation (List<EvaluatedMove> evaluatedMoves) {
 		int min = Win;
 		for (EvaluatedMove evaluatedMove: evaluatedMoves) {
-			if(evaluatedMove.value < min) {min = evaluatedMove.value;}
+			if(evaluatedMove.getValue() < min) {min = evaluatedMove.getValue();}
 		}
 		return min;
 	}
@@ -70,7 +70,7 @@ public class Minimax {
 		int evaluation = 0;
 		List<Chain> chains = game.getChains();
 		for (Chain chain : chains) {
-			evaluation = evaluation + evaluateChain(chain, game, player);
+			if (chain.getStrength() > 0) evaluation += evaluateChain(chain, game, player);
 		}
 		return evaluation;
 	}
