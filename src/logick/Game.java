@@ -54,6 +54,13 @@ public class Game {
 		
 	}
 	
+	public Game(Game game) {
+		this.chains = game.chains;
+		this.grid = game.grid;
+		this.onMove = game.onMove;
+		this.status = game.status;
+	}
+	
 	public List<Move> possibleMoves() {
 		List<Move> moves = new LinkedList<Move>();
 		for (int i = 0; i < size; i++) {
@@ -112,7 +119,7 @@ public class Game {
 		if (this.getStatus() == Status.WHITE_MOVE) moveColor = StoneColor.WHITE;
 		else if (this.getStatus() == Status.BLACK_MOVE) moveColor = StoneColor.BLACK;
 		
-		grid[move.getX()][move.getY()] = moveColor;
+		this.grid[move.getX()][move.getY()] = moveColor;
 		
 		// za vsako verigo preveri, ali je mrtva in ji doloci moc
 		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
