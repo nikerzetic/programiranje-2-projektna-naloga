@@ -1,7 +1,7 @@
 package logick;
 
 import gui.MainWindow;
-import intelligence.Minimax;
+import intelligence.AlphaBeta;
 
 public class ComputerPlayer extends Player {
 	
@@ -17,7 +17,7 @@ public class ComputerPlayer extends Player {
 		if (this.master.getGame().getStatus() == Status.WHITE_MOVE || 
 			this.master.getGame().getStatus() == Status.BLACK_MOVE) {
 			
-			this.master.getGame().play(Minimax.maxMove(Minimax.evaluateMove(this.master.getGame(), 2, this)));
+			this.master.getGame().play(AlphaBeta.optimalMove(this.master.getGame(), this));
 			
 			this.master.getGame().status();
 			this.master.getGame().setOnMove(this.master.oponent());
