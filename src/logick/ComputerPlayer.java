@@ -28,10 +28,7 @@ public class ComputerPlayer extends Player {
 				this.master.getGame().getOnMove().playYourMove();
 				this.master.repaintCanvas();
 			}
-			
-			System.out.println("4:" + this.master.getGame().getStatus() + " " + this.master.getGame().getOnMove());
 		}
-		System.out.println("5:" + this.master.getGame().getStatus() + " " + this.master.getGame().getOnMove());
 	}
 
 }
