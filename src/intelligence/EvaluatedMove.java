@@ -1,7 +1,6 @@
 package intelligence;
 
 import logick.Move;
-import logick.StoneColor;
 
 public class EvaluatedMove {
 		
@@ -21,4 +20,11 @@ public class EvaluatedMove {
 		return this.value;
 	}
 	
+	public void setMove(Move move) {
+		this.move = move;
+	}
+	
+	public void setValue(int value) {
+		this.value = value;
+	}
 }
