@@ -81,7 +81,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		getContentPane().add(status_label, status_label_layout);
 		
 		// zacnemo novo igro
-		newGame(new HumanPlayer(this, StoneColor.BLACK), new HumanPlayer(this, StoneColor.WHITE));
+		newGame(new HumanPlayer(this, StoneColor.BLACK), new ComputerPlayer(this, StoneColor.WHITE));
 		
 	}
 	
