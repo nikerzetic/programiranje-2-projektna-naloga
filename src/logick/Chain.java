@@ -17,6 +17,20 @@ public class Chain {
 		this.ys = y;
 	}
 	
+	public boolean containsMove(Move move) {
+		boolean value = false;
+		for (int x : this.getXS()) {
+			if (move.getX() == x) {
+				value = true;
+				break;
+			}
+		}
+		if (value) for (int y : this.getYS()) {
+			if (move.getY() == y) return true;
+		}
+		return false;
+	}
+	
 	public String toString() {
 		String chainString = "{";
 		for (int i = 0; i < 4; i++) {
