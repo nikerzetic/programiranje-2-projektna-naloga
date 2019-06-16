@@ -15,35 +15,38 @@ public class AlphaBeta {
 	private static final int LOSE = -WIN;
 	private static final int DRAW = 0;
 	
-	private static final int DEPTH = 8;
+	private static final int DEPTH = 11;
 	
 	// vrne potezo, ki naj jo igralec odigra
 	public static Move optimalMove(Game game, Player me) {
-		return alphaBetaMoves(game, DEPTH, 0, 0, me).getMove();
+		return alphaBetaMoves(game, DEPTH, LOSE, WIN, me).getMove();
 	}
 	
 	public static EvaluatedMove alphaBetaMoves(Game game, int depth, int alpha, int beta, Player me) {
 		List<Move> possibleMoves = game.possibleMoves();
-		EvaluatedMove optimalMove = new EvaluatedMove(possibleMoves.get(0), 0); 
-		if (game.getOnMove() == me) optimalMove.setValue(WIN); else optimalMove.setValue(LOSE);
+		EvaluatedMove optimalMove = new EvaluatedMove(possibleMoves.get(0), LOSE); 
 		for (Move move : possibleMoves) {
 			Game temporaryGame = new Game(game);
 			temporaryGame.play(move);
-			int temporaryEvaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, me);
-			if (game.getOnMove() == me) { 
-				if (temporaryEvaluation > optimalMove.getValue()) {
-					optimalMove.setValue(temporaryEvaluation);
-					optimalMove.setMove(move);
-					alpha = Math.max(alpha, optimalMove.getValue());
-				}
-			} else {
-				if (temporaryEvaluation < optimalMove.getValue()) {
-					optimalMove.setValue(temporaryEvaluation);
-					optimalMove.setMove(move);
-					beta = Math.min(beta, optimalMove.getValue());					
-				}	
+			int temporaryEvaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, game.oponent());
+			if (temporaryEvaluation > optimalMove.getValue()) {
+				optimalMove.setMove(move);
+				optimalMove.setValue(temporaryEvaluation);
 			}
-			if (alpha >= beta) return optimalMove;
+//			if (game.getOnMove() == me) { 
+//				if (temporaryEvaluation > optimalMove.getValue()) {
+//					optimalMove.setValue(temporaryEvaluation);
+//					optimalMove.setMove(move);
+//					alpha = Math.max(alpha, optimalMove.getValue());
+//				}
+//			} else {
+//				if (temporaryEvaluation < optimalMove.getValue()) {
+//					optimalMove.setValue(temporaryEvaluation);
+//					optimalMove.setMove(move);
+//					beta = Math.min(beta, optimalMove.getValue());					
+//				}	
+//			}
+//			if (alpha >= beta) return optimalMove;
 		}
 		return optimalMove;
 	}
@@ -62,8 +65,32 @@ public class AlphaBeta {
 		
 		if (depth == 0) return evaluatePosition(game, me);
 		
-		EvaluatedMove temporaryMove = alphaBetaMoves(game, depth, alpha, beta, me);
-		return temporaryMove.getValue();
+		List<Move> possibleMoves = game.possibleMoves();
+		
+		if (game.getOnMove() == me) {
+			int maximumEvaluation = LOSE;
+			for (Move move : possibleMoves) {
+				Game temporaryGame = new Game(game);
+				temporaryGame.play(move);
+				int evaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, me);
+				maximumEvaluation = Math.max(maximumEvaluation, evaluation);
+				alpha = Math.max(alpha, evaluation);
+				if (alpha <= beta) break;
+			}
+			return maximumEvaluation;
+		}
+		else {
+			int minimumEvaluation = WIN;
+			for (Move move : possibleMoves) {
+				Game temporaryGame = new Game(game);
+				temporaryGame.play(move);
+				int evaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, me);
+				minimumEvaluation = Math.max(minimumEvaluation, evaluation);
+				alpha = Math.max(alpha, evaluation);
+				if (alpha <= beta) break;
+			}
+			return minimumEvaluation;
+		}
 	}
 	
 	public static int evaluatePosition(Game game, Player me) {
