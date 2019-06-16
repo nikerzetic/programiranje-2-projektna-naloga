@@ -21,8 +21,6 @@ public class MainWindow extends JFrame implements ActionListener{
 	
 	private Game game;
 	private PlayingCanvas canvas;
-	private Player player1;
-	private Player player2;
 	
 	private JLabel status_label;
 	
@@ -88,16 +86,13 @@ public class MainWindow extends JFrame implements ActionListener{
 	// metoda za zacetek noove igre
 	public void newGame(Player player1, Player player2) {
 		System.out.println("New game");
-		this.game = new Game();
-		
-		this.player1 = player1;
-		this.player2 = player2;
+		this.game = new Game(player1, player2);
 		
 		this.game.setOnMove(player1);
 		this.game.setStatus(Status.BLACK_MOVE);
 		this.repaintCanvas();
 		
-		this.player1.playYourMove();
+		this.game.getOnMove().playYourMove();
 	}
 	
 	// metoda, ki znova izrise elemente v oknu
@@ -124,7 +119,7 @@ public class MainWindow extends JFrame implements ActionListener{
 			if (this.isValidMove(move)) {
 				game.play(move);
 				this.game.status();
-				this.game.setOnMove(this.oponent());
+				this.game.setOnMove(this.game.oponent());
 				if (this.game.getStatus() == Status.WHITE_MOVE || this.game.getStatus() == Status.BLACK_MOVE) {
 						this.game.setStatus(this.newStatus());
 					}
@@ -172,11 +167,6 @@ public class MainWindow extends JFrame implements ActionListener{
 			newGame(new HumanPlayer(this, StoneColor.BLACK), new HumanPlayer(this, StoneColor.WHITE));
 		}
 		
-	}
-	
-	
-	public Player oponent() {
-		return (this.game.getOnMove() == this.player1) ? this.player2 : this.player1;
 	}
 	
 	public Status newStatus() {

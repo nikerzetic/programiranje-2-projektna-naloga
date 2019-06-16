@@ -13,14 +13,20 @@ public class Game {
 	// matrika vseh presecisc
 	private StoneColor[][] grid;
 	
+	private Player player1;
+	private Player player2;
+	
 	// igralec na potezi
 	private Player onMove; // TODO ta spremenljivka je najbrz neuporabna, ker lahko, kdo je na potezi, dolocimo iz statusa
 	
 	private Status status = Status.BLACK_MOVE;
 	
-	public Game() {
+	public Game(Player player1, Player player2) {
 		
-		grid = new StoneColor[size][size];
+		this.grid = new StoneColor[size][size];
+		
+		this.player1 = player1;
+		this.player2 = player2;
 		
 		// sestavi seznam vseh moznih peteric na igralnem polju in
 		// doda vsa presecisce na mrezo in
@@ -55,10 +61,21 @@ public class Game {
 	}
 	
 	public Game(Game game) {
-		this.chains = game.chains;
-		this.grid = game.grid;
+		// v tem konstruktorju je pomembno, da ustvari nove kopije slednjih stvari
+		// TODO zagotovo obstaja boljsi nacin za to
+		for (Chain chain : game.chains) {
+			this.chains.add(new Chain(chain.getXS(), chain.getYS()));
+		}
+		this.grid = new StoneColor[size][size];
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+				this.grid[x][y] = game.grid[x][y];
+			}
+		}
 		this.onMove = game.onMove;
-		this.status = game.status;
+		this.player1 = game.player1;
+		this.player2 = game.player2;
+		this.setStatus(game.getStatus());
 	}
 	
 	public List<Move> possibleMoves() {
@@ -154,6 +171,11 @@ public class Game {
 			if (this.possibleMoves().isEmpty()) this.status = Status.DRAW;
 		}
 		return this.status;
+	}
+	
+	public Player oponent() {
+		if (this.onMove == player1) return player2;
+		else return player1;
 	}
 
 	// doslednost
