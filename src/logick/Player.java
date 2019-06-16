@@ -42,4 +42,9 @@ public abstract class Player {
 		else if (this.playerColor == StoneColor.BLACK) return Status.BLACK_MOVE;
 		return Status.DRAW; // se ne more zgoditi
 	}
+	
+	public MainWindow getMaster() {
+		return this.master;
+	}
+	
 }
