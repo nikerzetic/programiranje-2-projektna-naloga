@@ -1,16 +1,35 @@
 package logick;
 
+import gui.MainWindow;
+import intelligence.AlphaBeta;
+
 public class ComputerPlayer extends Player {
 	
-	public ComputerPlayer(StoneColor color) {
+	public ComputerPlayer(MainWindow master, StoneColor color) {
 		
-		super(color);
+		super(master, color);
 		human = false;
 		
 	}
 
-	public Move playMove() {
-		return null;
+	@Override
+	public void playYourMove() {
+		if (this.master.getGame().getStatus() == Status.WHITE_MOVE || 
+			this.master.getGame().getStatus() == Status.BLACK_MOVE) {
+			
+			Move toPlay = AlphaBeta.optimalMove(this.master.getGame(), this);
+			this.master.getGame().play(toPlay);
+			
+			this.master.getGame().status();
+			this.master.getGame().setOnMove(this.master.getGame().oponent());
+			
+			if (this.master.getGame().getStatus() == Status.WHITE_MOVE || 
+				this.master.getGame().getStatus() == Status.BLACK_MOVE) {
+				this.master.getGame().setStatus(this.master.newStatus());
+				this.master.getGame().getOnMove().playYourMove();
+				this.master.repaintCanvas();
+			}
+		}
 	}
-	
+
 }
