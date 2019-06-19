@@ -5,6 +5,7 @@ public class Move {
 	private int x;
 	private int y;
 	
+	// Konstruktor poteze.
 	public Move(int x, int y) {
 		this.x = x;
 		this.y = y;

@@ -2,7 +2,8 @@ package logick;
 
 import gui.MainWindow;
 
-// Player je razred, ki zna dolociti, ali je igralec na potezi in v primeru racunalnika odigrati potezo. Lahko je ComputerPlayer ali HumanPlayer
+// Player je abstrakten razred, ki zna dolociti, ali je igralec na potezi in v primeru racunalnika odigrati potezo. 
+// Lahko je ComputerPlayer ali HumanPlayer.
 
 public abstract class Player {
 	
@@ -12,6 +13,7 @@ public abstract class Player {
 	
 	protected MainWindow master;
 	
+	// Konstruktor.
 	public Player(MainWindow master, StoneColor color) {
 		
 		this.master = master;

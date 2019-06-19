@@ -20,29 +20,35 @@ import logick.*;
 public class MainWindow extends JFrame implements ActionListener{
 	
 	private Game game;
+	// JPanel, na katerem igramo igro.
 	private PlayingCanvas canvas;
 	
+	// Statusna vrstica.
 	private JLabel status_label;
 	
+	// Opcije iger.
 	private JMenuItem gameComputerHuman;
 	private JMenuItem gameHumanComputer;
 	private JMenuItem gameComputerComputer;
 	private JMenuItem gameHumanHuman;
 	
+	// Konstuktor
 	public MainWindow() {
 		
+		// Nastavitev naslova igre.
 		this.setTitle("Gomoku");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		// glavni meni
+		// Glavni meni.
 		JMenuBar mainMenu = new JMenuBar();
 		setJMenuBar(mainMenu);
 		JMenu gameMenu = new JMenu("Nova igra");
 		mainMenu.add(gameMenu);
 		
+		// Nastavi razporeditev okna.
 		this.setLayout(new GridBagLayout());
 		
-		// moznosti v meniju
+		// Moznosti v meniju.
 		gameComputerHuman = new JMenuItem("Racunalnik proti cloveku");
 		gameMenu.add(gameComputerHuman);
 		gameComputerHuman.addActionListener(this);
@@ -59,7 +65,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		gameMenu.add(gameHumanHuman);
 		gameHumanHuman.addActionListener(this);
 		
-		// igralno polje
+		// Dodamo igralno polje na okno.
 		canvas = new PlayingCanvas(this);
 		GridBagConstraints canvas_layout = new GridBagConstraints();
 		canvas_layout.gridx = 0;
@@ -69,7 +75,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		canvas_layout.weighty = 1.0;
 		getContentPane().add(canvas, canvas_layout);
 		
-		// vrstica, ki opisuje stanje igre
+		// Dodamo statusno vrstico, ki opisuje stanje igre.
 		status_label = new JLabel();
 		status_label.setFont(new Font(status_label.getFont().getName(), status_label.getFont().getStyle(), 20));
 		GridBagConstraints status_label_layout = new GridBagConstraints();
@@ -78,12 +84,12 @@ public class MainWindow extends JFrame implements ActionListener{
 		status_label_layout.anchor = GridBagConstraints.CENTER;
 		getContentPane().add(status_label, status_label_layout);
 		
-		// zacnemo novo igro
+		// Zacnemo novo igro.
 		newGame(new HumanPlayer(this, StoneColor.BLACK), new ComputerPlayer(this, StoneColor.WHITE));
 		
 	}
 	
-	// metoda za zacetek noove igre
+	// Metoda za nastavitev nove igre.
 	public void newGame(Player player1, Player player2) {
 		System.out.println("New game");
 		this.game = new Game(player1, player2);
@@ -95,7 +101,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		this.game.getOnMove().playYourMove();
 	}
 	
-	// metoda, ki znova izrise elemente v oknu
+	// Metoda, ki znova izrise elemente v oknu.
 	public void repaintCanvas() {
 		if (game == null) {
 			this.status_label.setText("Igra ni v teku.");
@@ -110,12 +116,11 @@ public class MainWindow extends JFrame implements ActionListener{
 		this.repaint();
 	}
 	
-	// metoda, ki jo platno poklice ob kliku
-	// TODO poenostavljenje na en blo kode
+	// Metoda, ki jo platno poklice ob kliku
 	public void click(int x, int y) {
 		Move move = new Move(x, y);
 		if (this.game.getOnMove().getHuman()) {
-			// preveri, ce je poteza veljavna, in spremeni barvo polja + osvezi platno + postavi drugega igralca na vrsto
+			// Preveri, ce je poteza veljavna. Ce je potem spremeni barvo polja, osvezi platno in postavi drugega igralca na vrsto.
 			if (this.isValidMove(move)) {
 				game.play(move);
 				this.game.status();
@@ -129,6 +134,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		}
 	}
 	
+	// Metoda, ki preveri, ce je poteza veljavna.
 	private boolean isValidMove(Move move) {
 		for (Move possibleMove : this.game.possibleMoves()) {
 			if (move.getX() == possibleMove.getX() && move.getY() == possibleMove.getY()) return true;
@@ -146,7 +152,8 @@ public class MainWindow extends JFrame implements ActionListener{
 //			}
 //		}
 //	}
-
+	
+	// Metoda, ki nastavi igro na tisto, ki smo jo izbrali iz Menija.
 	@Override
 	public void actionPerformed(ActionEvent event) {
 
@@ -169,13 +176,14 @@ public class MainWindow extends JFrame implements ActionListener{
 		
 	}
 	
+	// Metoda, ki spremeni status na nasprotnega.
 	public Status newStatus() {
 		if (this.game.getStatus() == Status.BLACK_MOVE) return Status.WHITE_MOVE;
 		else if (this.game.getStatus() == Status.WHITE_MOVE) return Status.BLACK_MOVE;
 		else return this.game.getStatus();
 	}
 	
-	// get in set metode
+	// Get in set metode.
 	public Game getGame() {
 		return game;
 	}

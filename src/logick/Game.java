@@ -4,21 +4,23 @@ import java.util.*;
 
 public class Game {
 
-	// velikost plosce 
+	// Velikost plosce.
 	private static int size = 15;
 	
-	// seznam vseh moznih verig na plosci
+	// Seznam vseh moznih verig na plosci.
 	private List<Chain> chains = new LinkedList<Chain>();
 	
-	// matrika vseh presecisc
+	// Matrika vseh presecisc.
 	private StoneColor[][] grid;
 	
+	// Igralca, ki bosta igrala igro.
 	private Player player1;
 	private Player player2;
 	
-	// igralec na potezi
-	private Player onMove; // TODO ta spremenljivka je najbrz neuporabna, ker lahko, kdo je na potezi, dolocimo iz statusa
+	// Igralec na potezi.
+	private Player onMove; // Ta spremenljivka je najbrz neuporabna, ker lahko, kdo je na potezi, dolocimo iz statusa.
 	
+	// Nastavitev statusa na "Crni na potezi".
 	private Status status = Status.BLACK_MOVE;
 	
 	public Game(Player player1, Player player2) {
@@ -28,18 +30,17 @@ public class Game {
 		this.player1 = player1;
 		this.player2 = player2;
 		
-		// sestavi seznam vseh moznih peteric na igralnem polju in
-		// doda vsa presecisce na mrezo in
-		// doda vse mozne poteze v seznam potez
+		// Ko se poklice igra, najprej sestavi seznam vseh moznih peteric na igralnem polju in
+		// doda vsa presecisce na mrezo, ter vse mozne poteze v seznam potez.
 		
 		int[][] vectors = {{0, 1}, {1, 0}, {1, 1}, {-1, 1}};
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
 				
-				// doda prazno presecisce na mrezo
+				// Doda prazno presecisce na mrezo.
 				grid[x][y] = StoneColor.EMPTY;
 				
-				// doda vse mozne vrste z zacetkom v (x, y)
+				// Doda vse mozne vrste z zacetkom v (x, y).
 				for (int[] v : vectors) {
 					int vx = v[0];
 					int vy = v[1];
@@ -60,9 +61,8 @@ public class Game {
 		
 	}
 	
+	// Konstruktor igre.
 	public Game(Game game) {
-		// v tem konstruktorju je pomembno, da ustvari nove kopije slednjih stvari
-		// TODO zagotovo obstaja boljsi nacin za to
 		for (Chain chain : game.chains) {
 			this.chains.add(new Chain(chain.getXS(), chain.getYS()));
 		}
@@ -78,6 +78,7 @@ public class Game {
 		this.setStatus(game.getStatus());
 	}
 	
+	// Metoda, ki vrne seznam vseh moznih potez.
 	public List<Move> possibleMoves() {
 		List<Move> moves = new LinkedList<Move>();
 		for (int i = 0; i < size; i++) {
@@ -88,10 +89,12 @@ public class Game {
 		return moves;
 	}
 	
+	// Metoda, ki izbrise vse verigo iz seznama verig.
 	public void deleteChain(Chain chain) {
 		chains.remove(chain);
 	}
 	
+	// Metoda, ki preveri, ce ima veriga en bel in en crn kamencek (oziroma, ce je "mrtva")
 	private boolean isDead(Chain chain) {
 		boolean black = false;
 		boolean white = false;
@@ -104,9 +107,9 @@ public class Game {
 		if (black && white) return true; else return false;
 	}
 	
-	// preveri, ali je veriga zmagovalna
-	// ne preveri, ali so vsi kamencki iste barve
-	// TODO neuporabna metoda
+	// Preveri, ali je veriga zmagovalna.
+	// Ne preveri, ali so vsi kamencki iste barve.
+	// Neuporabna metoda.
 	private boolean isWinning(Chain chain) {
 		int counter = 0;
 		int[] xs = chain.getXS();
@@ -116,7 +119,9 @@ public class Game {
 		}
 		return (counter == 5);
 	}
-
+	
+	// Metoda, ki preveri, ce so vsi kamencki v verigi iste barve,
+	// ali pa ce ima veriga vsaj 2 kamencka razlicne barve, jo doda v seznam "mrtvih" verig.
 	public StoneColor findStatus() {
 		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
 		for (Chain chain : chains) {
@@ -127,7 +132,8 @@ public class Game {
 		return StoneColor.EMPTY;
 	}
 
-	// TODO to metodo bi lahko razbili na vec pomoznih funkcij
+	// To metodo bi lahko razbili na vec pomoznih funkcij.
+	// Metoda, ki odigra potezo in izbrise vse "mrtve" verige.
 	public void play(Move move) {
 		int x = move.getX();
 		int y = move.getY();
@@ -138,7 +144,7 @@ public class Game {
 		
 		this.grid[move.getX()][move.getY()] = moveColor;
 		
-		// za vsako verigo preveri, ali je mrtva in ji doloci moc
+		// Za vsako verigo preveri, ali je mrtva in ji doloci moc.
 		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
 		for (Chain chain : this.chains) {
 			int[] xs = chain.getXS();
@@ -165,7 +171,7 @@ public class Game {
 		chains.removeAll(chainsToBeDeleted);
 	}
 	
-	// preveri, ali je izenaceno (ni vec praznega polja), ali vrne status
+	// Preveri, ali je izenaceno (ni vec praznega polja), ali pa vrne status.
 	public Status status() {
 		if (this.status == Status.WHITE_MOVE || this.status == Status.BLACK_MOVE) {
 			if (this.possibleMoves().isEmpty()) this.status = Status.DRAW;
@@ -178,7 +184,7 @@ public class Game {
 		else return player1;
 	}
 
-	// doslednost
+	// Doslednost,
 	// A.K.A. get in set metode
 	
 	public static int getSize() {
