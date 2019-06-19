@@ -117,10 +117,6 @@ public class MainWindow extends JFrame implements ActionListener{
 			// preveri, ce je poteza veljavna, in spremeni barvo polja + osvezi platno + postavi drugega igralca na vrsto
 			if (this.isValidMove(move)) {
 				game.play(move);
-				this.game.status();
-				if (this.game.getStatus() == Status.WHITE_MOVE || this.game.getStatus() == Status.BLACK_MOVE) {
-						this.game.setStatus(this.newStatus());
-					}
 				this.repaintCanvas();
 				this.game.getOnMove().playYourMove();
 			}
@@ -165,12 +161,6 @@ public class MainWindow extends JFrame implements ActionListener{
 			newGame(new HumanPlayer(this, StoneColor.BLACK), new HumanPlayer(this, StoneColor.WHITE));
 		}
 		
-	}
-	
-	public Status newStatus() {
-		if (this.game.getStatus() == Status.BLACK_MOVE) return Status.WHITE_MOVE;
-		else if (this.game.getStatus() == Status.WHITE_MOVE) return Status.BLACK_MOVE;
-		else return this.game.getStatus();
 	}
 	
 	// get in set metode

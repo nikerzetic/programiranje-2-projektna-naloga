@@ -12,8 +12,8 @@ public class HumanPlayer extends Player {
 	}
 
 	@Override
-	public void playYourMove() {}
+	public void playYourMove() {
+		this.master.repaintCanvas();
+	}
 	
-	
-
 }

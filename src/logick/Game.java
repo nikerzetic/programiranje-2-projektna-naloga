@@ -177,6 +177,7 @@ public class Game {
 		}
 		this.chains.removeAll(chainsToBeDeleted);
 		this.setOnMove(this.oponent());
+		this.newStatus();
 	}
 
 	// preveri, ali je izenaceno (ni vec praznega polja), ali vrne status
@@ -195,6 +196,12 @@ public class Game {
 			return player1;
 	}
 
+	public void newStatus() {
+		this.status();
+		if (this.status == Status.BLACK_MOVE) status = Status.WHITE_MOVE;
+		else if (this.status == Status.WHITE_MOVE) status = Status.BLACK_MOVE;
+	}
+	
 	// doslednost
 	// A.K.A. get in set metode
 	
@@ -203,9 +210,9 @@ public class Game {
 		String newLine = System.getProperty("line.separator");
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
-				if (this.grid[i][j] == StoneColor.BLACK) string += "W";
-				else if (this.grid[i][j] == StoneColor.WHITE) string += "B";
-				else string += "O";
+				if (this.grid[i][j] == StoneColor.BLACK) string += " B";
+				else if (this.grid[i][j] == StoneColor.WHITE) string += " W";
+				else string += " O";
 			}
 			string += newLine;
 		}
