@@ -5,7 +5,7 @@ import java.util.*;
 public class Game {
 
 	// velikost plosce
-	private static int size = 15;
+	private static int SIZE = 15;
 
 	// seznam vseh moznih verig na plosci
 	private List<Chain> chains = new LinkedList<Chain>();
@@ -24,7 +24,7 @@ public class Game {
 
 	public Game(Player player1, Player player2) {
 
-		this.grid = new StoneColor[size][size];
+		this.grid = new StoneColor[SIZE][SIZE];
 
 		this.player1 = player1;
 		this.player2 = player2;
@@ -34,8 +34,8 @@ public class Game {
 		// doda vse mozne poteze v seznam potez
 
 		int[][] vectors = { { 0, 1 }, { 1, 0 }, { 1, 1 }, { -1, 1 } };
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++) {
+		for (int x = 0; x < SIZE; x++) {
+			for (int y = 0; y < SIZE; y++) {
 
 				// doda prazno presecisce na mrezo
 				grid[x][y] = StoneColor.EMPTY;
@@ -44,7 +44,7 @@ public class Game {
 				for (int[] v : vectors) {
 					int vx = v[0];
 					int vy = v[1];
-					if (0 <= (x + 4 * vx) && (x + 4 * vx) < size && 0 <= (y + 4 * vy) && (y + 4 * vy) < size) {
+					if (0 <= (x + 4 * vx) && (x + 4 * vx) < SIZE && 0 <= (y + 4 * vy) && (y + 4 * vy) < SIZE) {
 						int[] xs = new int[5];
 						int[] ys = new int[5];
 						for (int i = 0; i < 5; i++) {
@@ -65,9 +65,9 @@ public class Game {
 		for (Chain chain : game.chains) {
 			this.chains.add(new Chain(chain.getXS(), chain.getYS()));
 		}
-		this.grid = new StoneColor[size][size];
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++) {
+		this.grid = new StoneColor[SIZE][SIZE];
+		for (int x = 0; x < SIZE; x++) {
+			for (int y = 0; y < SIZE; y++) {
 				this.grid[x][y] = game.grid[x][y];
 			}
 		}
@@ -79,8 +79,8 @@ public class Game {
 
 	public List<Move> possibleMoves() {
 		List<Move> moves = new LinkedList<Move>();
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < SIZE; j++) {
 				if (grid[i][j] == StoneColor.EMPTY)
 					moves.add(new Move(i, j));
 			}
@@ -197,13 +197,27 @@ public class Game {
 
 	// doslednost
 	// A.K.A. get in set metode
+	
+	public String toString() {
+		String string = "";
+		String newLine = System.getProperty("line.separator");
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < SIZE; j++) {
+				if (this.grid[i][j] == StoneColor.BLACK) string += "W";
+				else if (this.grid[i][j] == StoneColor.WHITE) string += "B";
+				else string += "O";
+			}
+			string += newLine;
+		}
+		return string;
+	}
 
 	public static int getSize() {
-		return size;
+		return SIZE;
 	}
 
 	public void setSize(int n) {
-		size = n;
+		SIZE = n;
 	}
 
 	public List<Chain> getChains() {

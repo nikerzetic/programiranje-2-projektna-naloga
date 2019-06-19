@@ -85,7 +85,6 @@ public class MainWindow extends JFrame implements ActionListener{
 	
 	// metoda za zacetek noove igre
 	public void newGame(Player player1, Player player2) {
-		System.out.println("New game");
 		this.game = new Game(player1, player2);
 		
 		this.game.setOnMove(player1);
