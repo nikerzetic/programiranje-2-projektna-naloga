@@ -119,7 +119,6 @@ public class MainWindow extends JFrame implements ActionListener{
 			if (this.isValidMove(move)) {
 				game.play(move);
 				this.game.status();
-				this.game.setOnMove(this.game.oponent());
 				if (this.game.getStatus() == Status.WHITE_MOVE || this.game.getStatus() == Status.BLACK_MOVE) {
 						this.game.setStatus(this.newStatus());
 					}

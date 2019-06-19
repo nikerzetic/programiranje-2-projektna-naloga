@@ -16,12 +16,12 @@ public class ComputerPlayer extends Player {
 	public void playYourMove() {
 		if (this.master.getGame().getStatus() == Status.WHITE_MOVE || 
 			this.master.getGame().getStatus() == Status.BLACK_MOVE) {
+			this.master.repaintCanvas();
 			
 			Move toPlay = AlphaBeta.optimalMove(this.master.getGame(), this);
 			this.master.getGame().play(toPlay);
 			
 			this.master.getGame().status();
-			this.master.getGame().setOnMove(this.master.getGame().oponent());
 			
 			if (this.master.getGame().getStatus() == Status.WHITE_MOVE || 
 				this.master.getGame().getStatus() == Status.BLACK_MOVE) {
