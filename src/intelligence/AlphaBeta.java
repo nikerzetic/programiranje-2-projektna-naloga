@@ -15,7 +15,7 @@ public class AlphaBeta {
 	private static final int LOSE = -WIN;
 	private static final int DRAW = 0;
 	
-	private static final int DEPTH = 11;
+	private static final int DEPTH = 2;
 	
 	// vrne potezo, ki naj jo igralec odigra
 	public static Move optimalMove(Game game, Player me) {
@@ -28,25 +28,11 @@ public class AlphaBeta {
 		for (Move move : possibleMoves) {
 			Game temporaryGame = new Game(game);
 			temporaryGame.play(move);
-			int temporaryEvaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, game.oponent());
+			int temporaryEvaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, me);
 			if (temporaryEvaluation > optimalMove.getValue()) {
 				optimalMove.setMove(move);
 				optimalMove.setValue(temporaryEvaluation);
 			}
-//			if (game.getOnMove() == me) { 
-//				if (temporaryEvaluation > optimalMove.getValue()) {
-//					optimalMove.setValue(temporaryEvaluation);
-//					optimalMove.setMove(move);
-//					alpha = Math.max(alpha, optimalMove.getValue());
-//				}
-//			} else {
-//				if (temporaryEvaluation < optimalMove.getValue()) {
-//					optimalMove.setValue(temporaryEvaluation);
-//					optimalMove.setMove(move);
-//					beta = Math.min(beta, optimalMove.getValue());					
-//				}	
-//			}
-//			if (alpha >= beta) return optimalMove;
 		}
 		return optimalMove;
 	}
@@ -85,9 +71,9 @@ public class AlphaBeta {
 				Game temporaryGame = new Game(game);
 				temporaryGame.play(move);
 				int evaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, me);
-				minimumEvaluation = Math.max(minimumEvaluation, evaluation);
-				alpha = Math.max(alpha, evaluation);
-				if (alpha <= beta) break;
+				minimumEvaluation = Math.min(minimumEvaluation, evaluation);
+				alpha = Math.min(alpha, evaluation);
+				if (alpha >= beta) break;
 			}
 			return minimumEvaluation;
 		}
@@ -95,9 +81,8 @@ public class AlphaBeta {
 	
 	public static int evaluatePosition(Game game, Player me) {
 		int evaluation = 0;
-		List<Chain> chains = game.getChains();
-		for (Chain chain : chains) {
-			if (chain.getStrength() > 0) evaluation += evaluateChain(chain, game, me);
+		for (Chain chain : game.getChains()) {
+			evaluation += evaluateChain(chain, game, me);
 		}
 		return evaluation;
 	}
