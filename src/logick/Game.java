@@ -5,7 +5,7 @@ import java.util.*;
 public class Game {
 
 	// velikost plosce
-	private static int SIZE = 15;
+	private static int SIZE = 7;
 
 	// seznam vseh moznih verig na plosci
 	private List<Chain> chains = new LinkedList<Chain>();
@@ -66,9 +66,9 @@ public class Game {
 			this.chains.add(new Chain(chain.getXS(), chain.getYS()));
 		}
 		this.grid = new StoneColor[SIZE][SIZE];
-		for (int x = 0; x < SIZE; x++) {
-			for (int y = 0; y < SIZE; y++) {
-				this.grid[x][y] = game.grid[x][y];
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < SIZE; j++) {
+				this.grid[i][j] = game.grid[i][j];
 			}
 		}
 		this.onMove = game.onMove;
@@ -81,8 +81,8 @@ public class Game {
 		List<Move> moves = new LinkedList<Move>();
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
-				if (grid[i][j] == StoneColor.EMPTY)
-					moves.add(new Move(i, j));
+				if (this.grid[i][j] == StoneColor.EMPTY)
+					moves.add(new Move(j, i));
 			}
 		}
 		return moves;
@@ -98,29 +98,15 @@ public class Game {
 		int[] xs = chain.getXS();
 		int[] ys = chain.getYS();
 		for (int i = 0; i < 5; i++) {
-			if (grid[xs[i]][ys[i]] == StoneColor.BLACK)
+			if (grid[ys[i]][xs[i]] == StoneColor.BLACK)
 				black = true;
-			else if (grid[xs[i]][ys[i]] == StoneColor.WHITE)
+			else if (grid[ys[i]][xs[i]] == StoneColor.WHITE)
 				white = true;
 		}
 		if (black && white)
 			return true;
 		else
 			return false;
-	}
-
-	// preveri, ali je veriga zmagovalna
-	// ne preveri, ali so vsi kamencki iste barve
-	// TODO neuporabna metoda
-	private boolean isWinning(Chain chain) {
-		int counter = 0;
-		int[] xs = chain.getXS();
-		int[] ys = chain.getYS();
-		for (int i = 0; i < 5; i++) {
-			if (grid[xs[i]][ys[i]] != StoneColor.EMPTY)
-				counter++;
-		}
-		return (counter == 5);
 	}
 
 	public StoneColor findStatus() {
@@ -146,7 +132,7 @@ public class Game {
 		else if (this.getStatus() == Status.BLACK_MOVE)
 			moveColor = StoneColor.BLACK;
 
-		this.grid[move.getX()][move.getY()] = moveColor;
+		this.grid[y][x] = moveColor; // prvo potrebno iskati po vrsticah, potem po stolpcih
 
 		// za vsako verigo preveri, ali je mrtva in ji doloci moc
 		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
