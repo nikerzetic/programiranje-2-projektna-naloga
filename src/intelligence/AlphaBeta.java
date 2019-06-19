@@ -15,7 +15,7 @@ public class AlphaBeta {
 	private static final int LOSE = -WIN;
 	private static final int DRAW = 0;
 	
-	private static final int DEPTH = 2;
+	private static final int DEPTH = 3;
 	
 	// vrne potezo, ki naj jo igralec odigra
 	public static Move optimalMove(Game game, Player me) {
@@ -51,7 +51,7 @@ public class AlphaBeta {
 		
 		if (depth == 0) return evaluatePosition(game, me);
 		
-		List<Move> possibleMoves = game.possibleMoves();
+		List<Move> possibleMoves = game.possibleMoves(); // TODO med mozne poteze doda ze odigrane poteze!
 		
 		if (game.getOnMove() == me) {
 			int maximumEvaluation = LOSE;
