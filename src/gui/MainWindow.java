@@ -178,6 +178,7 @@ public class MainWindow extends JFrame implements ActionListener{
 			if (!this.game.getPlayer1().getHuman()) this.game.getPlayer1().getWorker().cancel(true);
 			if (!this.game.getPlayer2().getHuman()) this.game.getPlayer2().getWorker().cancel(true);
 		}
+	}
 	
 	// Get in set metode.
 	public Game getGame() {
