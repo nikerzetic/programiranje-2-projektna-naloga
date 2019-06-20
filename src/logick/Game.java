@@ -35,8 +35,8 @@ public class Game {
 		// doda vsa presecisce na mrezo, ter vse mozne poteze v seznam potez.
 		
 		int[][] vectors = {{0, 1}, {1, 0}, {1, 1}, {-1, 1}};
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++) {
+		for (int x = 0; x < SIZE; x++) {
+			for (int y = 0; y < SIZE; y++) {
 				
 				// Doda prazno presecisce na mrezo.
 				grid[x][y] = StoneColor.EMPTY;
