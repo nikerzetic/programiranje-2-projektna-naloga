@@ -5,7 +5,7 @@ import java.util.*;
 public class Game {
 
 	// velikost plosce
-	private static int SIZE = 7;
+	private static int SIZE = 15;
 
 	// seznam vseh moznih verig na plosci
 	private List<Chain> chains = new LinkedList<Chain>();
@@ -82,7 +82,7 @@ public class Game {
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
 				if (this.grid[i][j] == StoneColor.EMPTY)
-					moves.add(new Move(j, i));
+					moves.add(new Move(i, j));
 			}
 		}
 		return moves;
@@ -98,9 +98,9 @@ public class Game {
 		int[] xs = chain.getXS();
 		int[] ys = chain.getYS();
 		for (int i = 0; i < 5; i++) {
-			if (grid[ys[i]][xs[i]] == StoneColor.BLACK)
+			if (grid[xs[i]][ys[i]] == StoneColor.BLACK)
 				black = true;
-			else if (grid[ys[i]][xs[i]] == StoneColor.WHITE)
+			else if (grid[xs[i]][ys[i]] == StoneColor.WHITE)
 				white = true;
 		}
 		if (black && white)
@@ -132,7 +132,7 @@ public class Game {
 		else if (this.getStatus() == Status.BLACK_MOVE)
 			moveColor = StoneColor.BLACK;
 
-		this.grid[y][x] = moveColor; // prvo potrebno iskati po vrsticah, potem po stolpcih
+		this.grid[x][y] = moveColor; // prvo potrebno iskati po vrsticah, potem po stolpcih
 
 		// za vsako verigo preveri, ali je mrtva in ji doloci moc
 		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
@@ -196,8 +196,8 @@ public class Game {
 		String newLine = System.getProperty("line.separator");
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
-				if (this.grid[i][j] == StoneColor.BLACK) string += " B";
-				else if (this.grid[i][j] == StoneColor.WHITE) string += " W";
+				if (this.grid[j][i] == StoneColor.BLACK) string += " B";
+				else if (this.grid[j][i] == StoneColor.WHITE) string += " W";
 				else string += " O";
 			}
 			string += newLine;
@@ -239,5 +239,13 @@ public class Game {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+	
+	public Player getPlayer1 () {
+		return this.player1;
+	}
+	
+	public Player getPlayer2 () {
+		return this.player2;
 	}
 }

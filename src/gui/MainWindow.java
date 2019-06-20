@@ -85,6 +85,8 @@ public class MainWindow extends JFrame implements ActionListener{
 	
 	// metoda za zacetek noove igre
 	public void newGame(Player player1, Player player2) {
+		this.stopInProgress();
+		
 		this.game = new Game(player1, player2);
 		
 		this.game.setOnMove(player1);
@@ -159,6 +161,14 @@ public class MainWindow extends JFrame implements ActionListener{
 		
 		if (source == gameHumanHuman) {
 			newGame(new HumanPlayer(this, StoneColor.BLACK), new HumanPlayer(this, StoneColor.WHITE));
+		}
+		
+	}
+	
+	private void stopInProgress() {
+		if (this.game != null) {
+			if (!this.game.getPlayer1().getHuman()) this.game.getPlayer1().getWorker().cancel(true);
+			if (!this.game.getPlayer2().getHuman()) this.game.getPlayer2().getWorker().cancel(true);
 		}
 		
 	}

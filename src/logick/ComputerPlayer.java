@@ -1,28 +1,37 @@
 package logick;
 
 import gui.MainWindow;
-import intelligence.AlphaBeta;
+import intelligence.MoveFinder;
 
 public class ComputerPlayer extends Player {
+	
+	private MoveFinder worker;
 	
 	public ComputerPlayer(MainWindow master, StoneColor color) {
 		
 		super(master, color);
 		human = false;
+		this.worker = new MoveFinder(this);
 		
 	}
 
 	@Override
 	public void playYourMove() {
+		
+		this.master.repaintCanvas();
+
 		if (this.master.getGame().getStatus() == Status.WHITE_MOVE || 
-			this.master.getGame().getStatus() == Status.BLACK_MOVE) {
-			this.master.repaintCanvas();
+				this.master.getGame().getStatus() == Status.BLACK_MOVE) {
+
+			this.worker.execute(); // TODO to lahko povzroca tezave, ker je definiran zunaj in se ne vsakic na novo ustvari
 			
-			Move toPlay = AlphaBeta.optimalMove(this.master.getGame(), this);
-			this.master.getGame().play(toPlay);
-			
-			this.master.getGame().getOnMove().playYourMove();
 		}
 	}
 
+
+	@Override
+	public MoveFinder getWorker() {
+		return this.worker;
+	}
+	
 }

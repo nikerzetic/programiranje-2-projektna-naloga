@@ -1,6 +1,7 @@
 package logick;
 
 import gui.MainWindow;
+import intelligence.MoveFinder;
 
 // Player je razred, ki zna dolociti, ali je igralec na potezi in v primeru racunalnika odigrati potezo. Lahko je ComputerPlayer ali HumanPlayer
 
@@ -46,5 +47,7 @@ public abstract class Player {
 	public MainWindow getMaster() {
 		return this.master;
 	}
+
+	public abstract MoveFinder getWorker();
 	
 }

@@ -15,7 +15,7 @@ public class AlphaBeta {
 	private static final int LOSE = -WIN;
 	private static final int DRAW = 0;
 	
-	private static final int DEPTH = 3;
+	private static final int DEPTH = 4;
 	
 	// vrne potezo, ki naj jo igralec odigra
 	public static Move optimalMove(Game game, Player me) {
@@ -26,18 +26,25 @@ public class AlphaBeta {
 		List<Move> possibleMoves = game.possibleMoves();
 		EvaluatedMove optimalMove = new EvaluatedMove(possibleMoves.get(0), LOSE); 
 		for (Move move : possibleMoves) {
+//			System.out.println(move);
 			Game temporaryGame = new Game(game);
 			temporaryGame.play(move);
+//			int temporaryEvaluation = evaluatePosition(temporaryGame, me);
+//			System.out.println(temporaryEvaluation);
 			int temporaryEvaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, me);
 			if (temporaryEvaluation > optimalMove.getValue()) {
 				optimalMove.setMove(move);
 				optimalMove.setValue(temporaryEvaluation);
+//			System.out.println(optimalMove);
+//			System.out.println(move);
 			}
 		}
+		System.out.println("=========");
 		return optimalMove;
 	}
 	
 	public static int alphaBetaPosition(Game game, int depth, int alpha, int beta, Player me) {
+//		System.out.println(".");
 		Status status = game.getStatus();
 		if (status == Status.BLACK_WIN) {
 			if (me.getPlayerColor() == StoneColor.BLACK) return WIN;
@@ -82,14 +89,15 @@ public class AlphaBeta {
 	public static int evaluatePosition(Game game, Player me) {
 		int evaluation = 0;
 		for (Chain chain : game.getChains()) {
-			evaluation += evaluateChain(chain, game, me);
+			if (chain.getStrength() > 0) evaluation += evaluateChain(chain, game, me);
 		}
 		return evaluation;
 	}
 	
 	public static int evaluateChain(Chain chain, Game game, Player me) {
-		if (chain.getColor() == me.getPlayerColor()) return (int) Math.pow(2, chain.getStrength());
-		else return - (int) Math.pow(2, chain.getStrength());
+		if (chain.getColor() == me.getPlayerColor()) return (int) Math.pow(4, chain.getStrength());
+		else if (chain.getColor() != StoneColor.EMPTY) return - (int) Math.pow(4, chain.getStrength());
+		return 0;
 	}
 		
 }
