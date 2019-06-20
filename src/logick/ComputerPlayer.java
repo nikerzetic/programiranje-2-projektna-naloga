@@ -3,18 +3,24 @@ package logick;
 import gui.MainWindow;
 import intelligence.MoveFinder;
 
+// Objekt, ki igra racunalnikove poteze.
+
 public class ComputerPlayer extends Player {
 	
 	private MoveFinder worker;
+
 	
 	public ComputerPlayer(MainWindow master, StoneColor color) {
 		
 		super(master, color);
+		
+		// Pove, da ni clovek ampak racunalnik.
 		human = false;
 		this.worker = new MoveFinder(this);
 		
 	}
-
+	
+	// Metoda, ki odigra racunalnikovo potezo in na potezo nastavi nasprotnika.
 	@Override
 	public void playYourMove() {
 		

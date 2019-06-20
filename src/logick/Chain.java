@@ -1,22 +1,26 @@
 package logick;
 
 public class Chain {
+	// Veriga je predstavljena z dvema tabelama koordinat.
+	// Ce so vsi njeni kamencki iste barve, ima se barvo (EMPTY, BLACK, WHITE).
 	
+	// Barva verige.
 	private StoneColor chainColor = StoneColor.EMPTY;
+	
+	// Moc verige.
 	private int strength = 0;
 	
-	// this value turns to false when two or more intersections are covered with stones of different colours 
-	// (have values of BLACK and WHITE)
-	// alternatively: the Chain could be deleted from the list, once it cannot form a winning combination
-	
+	// Tabeli koordinat.
 	private int[] xs;
 	private int[] ys;	
 	
+	// Konstruktor verig.
 	public Chain(int[] x, int[] y) {
 		this.xs = x;
 		this.ys = y;
 	}
 	
+	// Preveri, èe tabela vsebuje potezo.
 	public boolean containsMove(Move move) {
 		boolean value = false;
 		for (int x : this.getXS()) {
@@ -40,6 +44,7 @@ public class Chain {
 		return chainString;
 	}
 	
+	// Get in set metode.
 	public int[] getXS() {
 		return this.xs;
 	}
