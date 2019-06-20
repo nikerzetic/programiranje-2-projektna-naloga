@@ -91,7 +91,8 @@ public class MainWindow extends JFrame implements ActionListener{
 	
 	// Metoda za nastavitev nove igre.
 	public void newGame(Player player1, Player player2) {
-		System.out.println("New game");
+		this.stopInProgress();
+		
 		this.game = new Game(player1, player2);
 		
 		this.game.setOnMove(player1);
@@ -123,11 +124,6 @@ public class MainWindow extends JFrame implements ActionListener{
 			// Preveri, ce je poteza veljavna. Ce je potem spremeni barvo polja, osvezi platno in postavi drugega igralca na vrsto.
 			if (this.isValidMove(move)) {
 				game.play(move);
-				this.game.status();
-				this.game.setOnMove(this.game.oponent());
-				if (this.game.getStatus() == Status.WHITE_MOVE || this.game.getStatus() == Status.BLACK_MOVE) {
-						this.game.setStatus(this.newStatus());
-					}
 				this.repaintCanvas();
 				this.game.getOnMove().playYourMove();
 			}
@@ -176,12 +172,12 @@ public class MainWindow extends JFrame implements ActionListener{
 		
 	}
 	
-	// Metoda, ki spremeni status na nasprotnega.
-	public Status newStatus() {
-		if (this.game.getStatus() == Status.BLACK_MOVE) return Status.WHITE_MOVE;
-		else if (this.game.getStatus() == Status.WHITE_MOVE) return Status.BLACK_MOVE;
-		else return this.game.getStatus();
-	}
+
+	private void stopInProgress() {
+		if (this.game != null) {
+			if (!this.game.getPlayer1().getHuman()) this.game.getPlayer1().getWorker().cancel(true);
+			if (!this.game.getPlayer2().getHuman()) this.game.getPlayer2().getWorker().cancel(true);
+		}
 	
 	// Get in set metode.
 	public Game getGame() {

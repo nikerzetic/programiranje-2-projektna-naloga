@@ -27,4 +27,9 @@ public class EvaluatedMove {
 	public void setValue(int value) {
 		this.value = value;
 	}
+	
+	public String toString() {
+		return "EvaluatedMove(" + move + ", " + value + ")";
+	}
+	
 }
