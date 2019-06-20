@@ -1,6 +1,10 @@
 package logick;
 
-// Player je razred, ki zna dolociti, ali je igralec na potezi in v primeru racunalnika odigrati potezo. Lahko je ComputerPlayer ali HumanPlayer
+import gui.MainWindow;
+import intelligence.MoveFinder;
+
+// Player je abstrakten razred, ki zna dolociti, ali je igralec na potezi in v primeru racunalnika odigrati potezo. 
+// Lahko je ComputerPlayer ali HumanPlayer.
 
 public abstract class Player {
 	
@@ -8,11 +12,17 @@ public abstract class Player {
 	
 	protected boolean human;
 	
-	public Player(StoneColor color) {
+	protected MainWindow master;
+	
+	// Konstruktor.
+	public Player(MainWindow master, StoneColor color) {
 		
-		playerColor = color;
+		this.master = master;
+		this.playerColor = color;
 		
 	}
+	
+	public abstract void playYourMove();
 	
 	public void setPlayerColor(StoneColor color) {
 		this.playerColor = color;
@@ -27,7 +37,7 @@ public abstract class Player {
 	}
 	
 	public String toString() {
-		return "Player(" + this.playerColor +"); This is a human player: " + this.human;
+		return "Player(" + this.playerColor +")";
 	}
 	
 	public Status getStatus() {
@@ -35,4 +45,11 @@ public abstract class Player {
 		else if (this.playerColor == StoneColor.BLACK) return Status.BLACK_MOVE;
 		return Status.DRAW; // se ne more zgoditi
 	}
+	
+	public MainWindow getMaster() {
+		return this.master;
+	}
+
+	public abstract MoveFinder getWorker();
+	
 }

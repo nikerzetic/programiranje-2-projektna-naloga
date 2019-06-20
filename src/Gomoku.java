@@ -1,5 +1,4 @@
 import gui.MainWindow;
-import logick.*;
 
 public class Gomoku {
 
