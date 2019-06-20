@@ -15,7 +15,7 @@ public class AlphaBeta {
 	private static final int LOSE = -WIN;
 	private static final int DRAW = 0;
 	
-	private static final int DEPTH = 4;
+	private static final int DEPTH = 3;
 	
 	// vrne potezo, ki naj jo igralec odigra
 	public static Move optimalMove(Game game, Player me) {
