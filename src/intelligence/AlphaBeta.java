@@ -15,23 +15,25 @@ public class AlphaBeta {
 	private static final int LOSE = -WIN;
 	private static final int DRAW = 0;
 	
-	private static final int DEPTH = 3;
+	private static final int DEPTH = 2;
 	
 	// vrne potezo, ki naj jo igralec odigra
 	public static Move optimalMove(Game game, Player me) {
 		return alphaBetaMoves(game, DEPTH, LOSE, WIN, me).getMove();
 	}
 	
-	public static EvaluatedMove alphaBetaMoves(Game game, int depth, int alpha, int beta, Player me) {
+	public static EvaluatedMove alphaBetaMoves(Game game, int depth, int alpha, int beta, Player me) { // TODO lahko bi dodali sprotno ciscenje 
 		List<Move> possibleMoves = game.possibleMoves();
 		EvaluatedMove optimalMove = new EvaluatedMove(possibleMoves.get(0), LOSE); 
 		for (Move move : possibleMoves) {
 //			System.out.println(move);
 			Game temporaryGame = new Game(game);
 			temporaryGame.play(move);
-//			int temporaryEvaluation = evaluatePosition(temporaryGame, me);
-//			System.out.println(temporaryEvaluation);
+			System.out.println(temporaryGame);
+			System.out.println("T: " + temporaryGame.getChains());
 			int temporaryEvaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, me);
+//			for (int i = 0; i < depth-1; i++) System.out.print("  ");
+//			System.out.println(temporaryEvaluation);
 			if (temporaryEvaluation > optimalMove.getValue()) {
 				optimalMove.setMove(move);
 				optimalMove.setValue(temporaryEvaluation);
@@ -39,18 +41,22 @@ public class AlphaBeta {
 //			System.out.println(move);
 			}
 		}
+//		for (int i = 0; i < depth; i++) System.out.print("  ");
+//		System.out.println(optimalMove.getValue());
 		System.out.println("=========");
 		return optimalMove;
 	}
 	
-	public static int alphaBetaPosition(Game game, int depth, int alpha, int beta, Player me) {
-//		System.out.println(".");
-		Status status = game.getStatus();
+	public static int alphaBetaPosition(Game game, int depth, int alpha, int beta, Player me) { // TODO ta metoda nikdar ne vrne win
+		Status status = game.isWin();
+		System.out.println(System.identityHashCode(status) + " " +  status);
 		if (status == Status.BLACK_WIN) {
+			System.out.println("O");
 			if (me.getPlayerColor() == StoneColor.BLACK) return WIN;
 			else return LOSE;
 			}
 		else if (status == Status.WHITE_WIN) {
+			System.out.println("O");
 			if (me.getPlayerColor() == StoneColor.WHITE) return WIN;
 			else return LOSE;
 			}
@@ -66,9 +72,11 @@ public class AlphaBeta {
 				Game temporaryGame = new Game(game);
 				temporaryGame.play(move);
 				int evaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, me);
+//				for (int i = 0; i < depth-1; i++) System.out.print("  ");
+//				System.out.println(evaluation);
 				maximumEvaluation = Math.max(maximumEvaluation, evaluation);
 				alpha = Math.max(alpha, evaluation);
-				if (alpha <= beta) break;
+				if (beta <= alpha) break;
 			}
 			return maximumEvaluation;
 		}
@@ -78,9 +86,11 @@ public class AlphaBeta {
 				Game temporaryGame = new Game(game);
 				temporaryGame.play(move);
 				int evaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, me);
+//				for (int i = 0; i < depth-1; i++) System.out.print("  ");
+//				System.out.println(evaluation);
 				minimumEvaluation = Math.min(minimumEvaluation, evaluation);
 				alpha = Math.min(alpha, evaluation);
-				if (alpha >= beta) break;
+				if (beta <= alpha) break;
 			}
 			return minimumEvaluation;
 		}
@@ -95,8 +105,8 @@ public class AlphaBeta {
 	}
 	
 	public static int evaluateChain(Chain chain, Game game, Player me) {
-		if (chain.getColor() == me.getPlayerColor()) return (int) Math.pow(4, chain.getStrength());
-		else if (chain.getColor() != StoneColor.EMPTY) return - (int) Math.pow(4, chain.getStrength());
+		if (chain.getColor() == me.getPlayerColor()) return chain.getStrength();// (int) Math.pow(8, chain.getStrength()-1);
+		else if (chain.getColor() != StoneColor.EMPTY) return - chain.getStrength(); // (int) Math.pow(8, chain.getStrength()-1);
 		return 0;
 	}
 		

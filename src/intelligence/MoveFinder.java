@@ -24,8 +24,10 @@ public class MoveFinder extends SwingWorker {
 	
 	@Override
 	public void done() {
-		this.player.getMaster().getGame().play(this.toPlay);
-		this.player.getMaster().getGame().getOnMove().playYourMove();
+		if (this.toPlay != null) {
+			this.player.getMaster().getGame().play(this.toPlay);
+			this.player.getMaster().getGame().getOnMove().playYourMove();
+		}
 	}
 
 }

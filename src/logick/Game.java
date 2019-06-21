@@ -5,7 +5,7 @@ import java.util.*;
 public class Game {
 
 	// Velikost plosce
-	private static int SIZE = 15;
+	private static int SIZE = 7;
 	
 	// Seznam vseh moznih verig na plosci.
 	private List<Chain> chains = new LinkedList<Chain>();
@@ -60,7 +60,7 @@ public class Game {
 
 	}
 	
-	// Konstruktor igre.
+	// Konstruktor igre iz ze obstojece igre.
 	public Game(Game game) {
 		for (Chain chain : game.chains) {
 			this.chains.add(new Chain(chain.getXS(), chain.getYS()));
@@ -74,7 +74,8 @@ public class Game {
 		this.onMove = game.onMove;
 		this.player1 = game.player1;
 		this.player2 = game.player2;
-		this.setStatus(game.getStatus());
+		this.status = game.status;
+//		this.setStatus(game.getStatus());
   }
 	
 	// Metoda, ki vrne seznam vseh moznih potez.
@@ -125,6 +126,7 @@ public class Game {
 	// To metodo bi lahko razbili na vec pomoznih funkcij.
 	// Metoda, ki odigra potezo in izbrise vse "mrtve" verige.
 	public void play(Move move) {
+//		System.out.println("Play1: " + this.status);
 		int x = move.getX();
 		int y = move.getY();
 		StoneColor moveColor = StoneColor.EMPTY;
@@ -157,6 +159,7 @@ public class Game {
 							this.status = Status.WHITE_WIN;
 						else if (chain.getColor() == StoneColor.BLACK)
 							this.status = Status.BLACK_WIN;
+						System.out.println(this.chains);
 					}
 				}
 //				if (grid[xs[i]][ys[i]] == StoneColor.BLACK) black = true;
@@ -166,6 +169,7 @@ public class Game {
 		this.chains.removeAll(chainsToBeDeleted);
 		this.setOnMove(this.oponent());
 		this.newStatus();
+//		System.out.println("Play2: " + this.status);
 	}
 	
 	// Preveri, ali je izenaceno (ni vec praznega polja), ali pa vrne status.
@@ -188,6 +192,22 @@ public class Game {
 		this.status();
 		if (this.status == Status.BLACK_MOVE) status = Status.WHITE_MOVE;
 		else if (this.status == Status.WHITE_MOVE) status = Status.BLACK_MOVE;
+	}
+	
+	public Status isWin() { // TODO metoda, katere namen je bil popraviti alphaBeta
+		for (Chain chain : this.chains) {
+			if (chain.getStrength() == 5) {
+				if (chain.getColor() == StoneColor.BLACK) {
+					this.status = Status.BLACK_WIN;
+					break;
+				}
+				else {
+					status = Status.WHITE_WIN;
+					break;
+				}
+			}
+		}
+		return this.status;
 	}
 	
 	// Doslednost,

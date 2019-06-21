@@ -16,7 +16,6 @@ public class ComputerPlayer extends Player {
 		
 		// Pove, da ni clovek ampak racunalnik.
 		human = false;
-		this.worker = new MoveFinder(this);
 		
 	}
 	
@@ -25,6 +24,8 @@ public class ComputerPlayer extends Player {
 	public void playYourMove() {
 		
 		this.master.repaintCanvas();
+
+		this.worker = new MoveFinder(this);
 
 		if (this.master.getGame().getStatus() == Status.WHITE_MOVE || 
 				this.master.getGame().getStatus() == Status.BLACK_MOVE) {

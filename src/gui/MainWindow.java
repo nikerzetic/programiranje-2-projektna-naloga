@@ -175,8 +175,8 @@ public class MainWindow extends JFrame implements ActionListener{
 
 	private void stopInProgress() {
 		if (this.game != null) {
-			if (!this.game.getPlayer1().getHuman()) this.game.getPlayer1().getWorker().cancel(true);
-			if (!this.game.getPlayer2().getHuman()) this.game.getPlayer2().getWorker().cancel(true);
+			if (!this.game.getPlayer1().getHuman()) if (this.game.getPlayer1().getWorker() != null) this.game.getPlayer1().getWorker().cancel(true);
+			if (!this.game.getPlayer2().getHuman()) if (this.game.getPlayer2().getWorker() != null) this.game.getPlayer2().getWorker().cancel(true); // TODO Null pointer exeption
 		}
 	}
 	
