@@ -159,17 +159,13 @@ public class Game {
 							this.status = Status.WHITE_WIN;
 						else if (chain.getColor() == StoneColor.BLACK)
 							this.status = Status.BLACK_WIN;
-						System.out.println(this.chains);
 					}
 				}
-//				if (grid[xs[i]][ys[i]] == StoneColor.BLACK) black = true;
-//				else if (grid[xs[i]][ys[i]] == StoneColor.WHITE) white = true;
 			}
 		}
 		this.chains.removeAll(chainsToBeDeleted);
 		this.setOnMove(this.oponent());
 		this.newStatus();
-//		System.out.println("Play2: " + this.status);
 	}
 	
 	// Preveri, ali je izenaceno (ni vec praznega polja), ali pa vrne status.

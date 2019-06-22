@@ -26,38 +26,24 @@ public class AlphaBeta {
 		List<Move> possibleMoves = game.possibleMoves();
 		EvaluatedMove optimalMove = new EvaluatedMove(possibleMoves.get(0), LOSE); 
 		for (Move move : possibleMoves) {
-//			System.out.println(move);
 			Game temporaryGame = new Game(game);
 			temporaryGame.play(move);
-			System.out.println(temporaryGame);
-			System.out.println("T: " + temporaryGame.getChains());
-			if (temporaryGame.getChains().size() == 1) System.out.println(temporaryGame.getChains().get(0).getStrength());
 			int temporaryEvaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, me);
-//			for (int i = 0; i < depth-1; i++) System.out.print("  ");
-//			System.out.println(temporaryEvaluation);
 			if (temporaryEvaluation > optimalMove.getValue()) {
 				optimalMove.setMove(move);
 				optimalMove.setValue(temporaryEvaluation);
-//			System.out.println(optimalMove);
-//			System.out.println(move);
 			}
 		}
-//		for (int i = 0; i < depth; i++) System.out.print("  ");
-//		System.out.println(optimalMove.getValue());
-		System.out.println("=========");
 		return optimalMove;
 	}
 	
 	public static int alphaBetaPosition(Game game, int depth, int alpha, int beta, Player me) { // TODO ta metoda nikdar ne vrne win
 		Status status = game.getStatus();
-		System.out.println(System.identityHashCode(status) + " " +  status);
 		if (status == Status.BLACK_WIN) {
-			System.out.println("O");
 			if (me.getPlayerColor() == StoneColor.BLACK) return WIN;
 			else return LOSE;
 			}
 		else if (status == Status.WHITE_WIN) {
-			System.out.println("O");
 			if (me.getPlayerColor() == StoneColor.WHITE) return WIN;
 			else return LOSE;
 			}
@@ -73,8 +59,6 @@ public class AlphaBeta {
 				Game temporaryGame = new Game(game);
 				temporaryGame.play(move);
 				int evaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, me);
-//				for (int i = 0; i < depth-1; i++) System.out.print("  ");
-//				System.out.println(evaluation);
 				maximumEvaluation = Math.max(maximumEvaluation, evaluation);
 				alpha = Math.max(alpha, evaluation);
 				if (beta <= alpha) break;
@@ -87,8 +71,6 @@ public class AlphaBeta {
 				Game temporaryGame = new Game(game);
 				temporaryGame.play(move);
 				int evaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, me);
-//				for (int i = 0; i < depth-1; i++) System.out.print("  ");
-//				System.out.println(evaluation);
 				minimumEvaluation = Math.min(minimumEvaluation, evaluation);
 				alpha = Math.min(alpha, evaluation);
 				if (beta <= alpha) break;
@@ -106,8 +88,8 @@ public class AlphaBeta {
 	}
 	
 	public static int evaluateChain(Chain chain, Game game, Player me) {
-		if (chain.getColor() == me.getPlayerColor()) return chain.getStrength();// (int) Math.pow(8, chain.getStrength()-1);
-		else if (chain.getColor() != StoneColor.EMPTY) return - chain.getStrength(); // (int) Math.pow(8, chain.getStrength()-1);
+		if (chain.getColor() == me.getPlayerColor()) return  (int) Math.pow(8, chain.getStrength()-1);
+		else if (chain.getColor() != StoneColor.EMPTY) return - (int) Math.pow(8, chain.getStrength()-1);
 		return 0;
 	}
 		
