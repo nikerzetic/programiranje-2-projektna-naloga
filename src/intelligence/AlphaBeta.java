@@ -31,6 +31,7 @@ public class AlphaBeta {
 			temporaryGame.play(move);
 			System.out.println(temporaryGame);
 			System.out.println("T: " + temporaryGame.getChains());
+			if (temporaryGame.getChains().size() == 1) System.out.println(temporaryGame.getChains().get(0).getStrength());
 			int temporaryEvaluation = alphaBetaPosition(temporaryGame, depth-1, alpha, beta, me);
 //			for (int i = 0; i < depth-1; i++) System.out.print("  ");
 //			System.out.println(temporaryEvaluation);
@@ -48,7 +49,7 @@ public class AlphaBeta {
 	}
 	
 	public static int alphaBetaPosition(Game game, int depth, int alpha, int beta, Player me) { // TODO ta metoda nikdar ne vrne win
-		Status status = game.isWin();
+		Status status = game.getStatus();
 		System.out.println(System.identityHashCode(status) + " " +  status);
 		if (status == Status.BLACK_WIN) {
 			System.out.println("O");

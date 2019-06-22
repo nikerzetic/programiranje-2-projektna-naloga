@@ -5,7 +5,7 @@ import java.util.*;
 public class Game {
 
 	// Velikost plosce
-	private static int SIZE = 7;
+	private static int SIZE = 15;
 	
 	// Seznam vseh moznih verig na plosci.
 	private List<Chain> chains = new LinkedList<Chain>();
@@ -63,7 +63,7 @@ public class Game {
 	// Konstruktor igre iz ze obstojece igre.
 	public Game(Game game) {
 		for (Chain chain : game.chains) {
-			this.chains.add(new Chain(chain.getXS(), chain.getYS()));
+			this.chains.add(new Chain(chain));
 		}
 		this.grid = new StoneColor[SIZE][SIZE];
 		for (int i = 0; i < SIZE; i++) {

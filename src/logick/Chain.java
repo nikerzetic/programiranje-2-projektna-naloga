@@ -20,6 +20,13 @@ public class Chain {
 		this.ys = y;
 	}
 	
+	public Chain(Chain chain) {
+		this.xs = chain.getXS();
+		this.ys = chain.getYS();
+		this.strength = chain.getStrength();
+		this.chainColor = chain.getColor();
+	}
+	
 	// Preveri, èe tabela vsebuje potezo.
 	public boolean containsMove(Move move) {
 		boolean value = false;
