@@ -1,10 +1,13 @@
 package logick;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+
+// Osnovni razred za igranje igre.
 
 public class Game {
 
-	// Velikost plosce
+	// Velikost plosce.
 	private static int SIZE = 15;
 	
 	// Seznam vseh moznih verig na plosci.
@@ -18,12 +21,12 @@ public class Game {
 	private Player player2;
 	
 	// Igralec na potezi.
-	private Player onMove; // Ta spremenljivka je najbrz neuporabna, ker lahko, kdo je na potezi, dolocimo iz statusa.
+	private Player onMove;
 	
-	// Nastavitev statusa na "Crni na potezi".
-
+	// Igro vedno zacne crni igralec.
 	private Status status = Status.BLACK_MOVE;
 
+	// Konstruktor.
 	public Game(Player player1, Player player2) {
 
 		this.grid = new StoneColor[SIZE][SIZE];
@@ -60,7 +63,7 @@ public class Game {
 
 	}
 	
-	// Konstruktor igre iz ze obstojece igre.
+	// Konstruktor igre iz dane igre.
 	public Game(Game game) {
 		for (Chain chain : game.chains) {
 			this.chains.add(new Chain(chain));
@@ -75,7 +78,6 @@ public class Game {
 		this.player1 = game.player1;
 		this.player2 = game.player2;
 		this.status = game.status;
-//		this.setStatus(game.getStatus());
   }
 	
 	// Metoda, ki vrne seznam vseh moznih potez.
@@ -109,36 +111,30 @@ public class Game {
 		else return false;
 	}
 	
-	// Metoda, ki preveri, ce so vsi kamencki v verigi iste barve,
-	// ali pa ce ima veriga vsaj 2 kamencka razlicne barve, jo doda v seznam "mrtvih" verig.
-	public StoneColor findStatus() {
-		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
-		for (Chain chain : chains) {
-			if (chain.getStrength() == 5)
-				return chain.getColor();
-			else if (isDead(chain))
-				chainsToBeDeleted.add(chain);
-		}
-		chains.removeAll(chainsToBeDeleted);
-		return StoneColor.EMPTY;
-	}
-
-	// To metodo bi lahko razbili na vec pomoznih funkcij.
 	// Metoda, ki odigra potezo in izbrise vse "mrtve" verige.
 	public void play(Move move) {
-//		System.out.println("Play1: " + this.status);
 		int x = move.getX();
 		int y = move.getY();
 		StoneColor moveColor = StoneColor.EMPTY;
-
+		
 		if (this.getStatus() == Status.WHITE_MOVE)
 			moveColor = StoneColor.WHITE;
 		else if (this.getStatus() == Status.BLACK_MOVE)
 			moveColor = StoneColor.BLACK;
 
-		this.grid[x][y] = moveColor; // prvo potrebno iskati po vrsticah, potem po stolpcih
+		this.grid[x][y] = moveColor;
 
-		// Za vsako verigo preveri, ali je mrtva in ji doloci moc.
+		this.sieveChains(move);
+		this.setOnMove(this.oponent());
+		this.newStatus();
+	}
+	
+	// Metoda, ki vsaki verigi doloci moc in izbrise mrtve.
+	private void sieveChains(Move move) {
+		int x = move.getX();
+		int y = move.getY();
+		StoneColor moveColor = StoneColor.EMPTY;
+
 		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
 		for (Chain chain : this.chains) {
 			int[] xs = chain.getXS();
@@ -164,8 +160,6 @@ public class Game {
 			}
 		}
 		this.chains.removeAll(chainsToBeDeleted);
-		this.setOnMove(this.oponent());
-		this.newStatus();
 	}
 	
 	// Preveri, ali je izenaceno (ni vec praznega polja), ali pa vrne status.
@@ -177,6 +171,7 @@ public class Game {
 		return this.status;
 	}
 
+	// Poisce nasprotnika igralca na potezi.
 	public Player oponent() {
 		if (this.onMove == player1)
 			return player2;
@@ -184,30 +179,12 @@ public class Game {
 			return player1;
 	}
 
+	// Nastavi drugega igralca na potezo, ce je mogoce.
 	public void newStatus() {
 		this.status();
 		if (this.status == Status.BLACK_MOVE) status = Status.WHITE_MOVE;
 		else if (this.status == Status.WHITE_MOVE) status = Status.BLACK_MOVE;
 	}
-	
-	public Status isWin() { // TODO metoda, katere namen je bil popraviti alphaBeta
-		for (Chain chain : this.chains) {
-			if (chain.getStrength() == 5) {
-				if (chain.getColor() == StoneColor.BLACK) {
-					this.status = Status.BLACK_WIN;
-					break;
-				}
-				else {
-					status = Status.WHITE_WIN;
-					break;
-				}
-			}
-		}
-		return this.status;
-	}
-	
-	// Doslednost,
-	// A.K.A. get in set metode
 	
 	public String toString() {
 		String string = "";
@@ -223,6 +200,7 @@ public class Game {
 		return string;
 	}
 
+	// Get in set metode.
 	public static int getSize() {
 		return SIZE;
 	}

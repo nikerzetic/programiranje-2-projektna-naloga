@@ -14,7 +14,7 @@ import javax.swing.JMenuItem;
 
 import logick.*;
 
-// Hrani trenutno stanje igre in nadzoruje njen potek
+// Hrani trenutno stanje igre in nadzoruje njen potek.
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame implements ActionListener{
@@ -32,7 +32,7 @@ public class MainWindow extends JFrame implements ActionListener{
 	private JMenuItem gameComputerComputer;
 	private JMenuItem gameHumanHuman;
 	
-	// Konstuktor
+	// Konstuktor.
 	public MainWindow() {
 		
 		// Nastavitev naslova igre.
@@ -49,19 +49,19 @@ public class MainWindow extends JFrame implements ActionListener{
 		this.setLayout(new GridBagLayout());
 		
 		// Moznosti v meniju.
-		gameComputerHuman = new JMenuItem("Racunalnik proti cloveku");
+		gameComputerHuman = new JMenuItem("Računalnik proti človeku");
 		gameMenu.add(gameComputerHuman);
 		gameComputerHuman.addActionListener(this);
 		
-		gameHumanComputer = new JMenuItem("Clovek proti racunalniku");
+		gameHumanComputer = new JMenuItem("Človek proti računalniku");
 		gameMenu.add(gameHumanComputer);
 		gameHumanComputer.addActionListener(this);
 		
-		gameComputerComputer = new JMenuItem("Racunalnik proti racunalniku");
+		gameComputerComputer = new JMenuItem("Računalnik proti računalniku");
 		gameMenu.add(gameComputerComputer);
 		gameComputerComputer.addActionListener(this);
 
-		gameHumanHuman = new JMenuItem("Clovek proti cloveku");
+		gameHumanHuman = new JMenuItem("Človek proti človeku");
 		gameMenu.add(gameHumanHuman);
 		gameHumanHuman.addActionListener(this);
 		
@@ -108,16 +108,16 @@ public class MainWindow extends JFrame implements ActionListener{
 			this.status_label.setText("Igra ni v teku.");
 		}
 		else {
-			if (this.game.getStatus() == Status.DRAW) this.status_label.setText("Izenacenje.");
+			if (this.game.getStatus() == Status.DRAW) this.status_label.setText("Izenačenje.");
 			else if (this.game.getStatus() == Status.WHITE_MOVE) this.status_label.setText("Beli igralec je na potezi.");
-			else if (this.game.getStatus() == Status.BLACK_MOVE) this.status_label.setText("Crni igralec je na potezi.");
+			else if (this.game.getStatus() == Status.BLACK_MOVE) this.status_label.setText("Črni igralec je na potezi.");
 			else if (this.game.getStatus() == Status.WHITE_WIN) this.status_label.setText("Beli igralec je zmagal.");
-			else if (this.game.getStatus() == Status.BLACK_WIN) this.status_label.setText("Crni igralec je zmagal.");
+			else if (this.game.getStatus() == Status.BLACK_WIN) this.status_label.setText("Črni igralec je zmagal.");
 		}
 		this.repaint();
 	}
 	
-	// Metoda, ki jo platno poklice ob kliku
+	// Metoda, ki jo platno poklice ob kliku.
 	public void click(int x, int y) {
 		Move move = new Move(x, y);
 		if (this.game.getOnMove().getHuman()) {
@@ -138,18 +138,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		return false;
 	}
 	
-//	private void mainLoop() {
-//		while(true) {
-//			if (this.game.getOnMove().getHuman()) {
-//				Thread.yield();
-//			}
-//			else {
-//				this.game.play(this.game.getOnMove().playYourMove());
-//			}
-//		}
-//	}
-	
-	// Metoda, ki nastavi igro na tisto, ki smo jo izbrali iz Menija.
+	// Metoda, ki nastavi igro na tisto, ki smo jo izbrali v Meniju.
 	@Override
 	public void actionPerformed(ActionEvent event) {
 
@@ -176,7 +165,7 @@ public class MainWindow extends JFrame implements ActionListener{
 	private void stopInProgress() {
 		if (this.game != null) {
 			if (!this.game.getPlayer1().getHuman()) if (this.game.getPlayer1().getWorker() != null) this.game.getPlayer1().getWorker().cancel(true);
-			if (!this.game.getPlayer2().getHuman()) if (this.game.getPlayer2().getWorker() != null) this.game.getPlayer2().getWorker().cancel(true); // TODO Null pointer exeption
+			if (!this.game.getPlayer2().getHuman()) if (this.game.getPlayer2().getWorker() != null) this.game.getPlayer2().getWorker().cancel(true);
 		}
 	}
 	

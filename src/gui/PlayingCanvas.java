@@ -14,9 +14,10 @@ import javax.swing.JPanel;
 import logick.Game;
 import logick.StoneColor;
 
+// Igralno polje, na katerem se poteka igra.
+
 @SuppressWarnings("serial")
 public class PlayingCanvas extends JPanel implements MouseListener, MouseMotionListener {
-	// Igralno polje, na katerem se poteka igra.
 	
 	private MainWindow master;
 	
@@ -42,7 +43,7 @@ public class PlayingCanvas extends JPanel implements MouseListener, MouseMotionL
 	// Sirina crt.
 	float lineWidth = 1;
 	
-	// Konstruktor
+	// Konstruktor.
 	public PlayingCanvas(MainWindow master) {
 		
 		super();
@@ -85,7 +86,7 @@ public class PlayingCanvas extends JPanel implements MouseListener, MouseMotionL
 		int topY = (topLineY + 1) * size + padY;
 		int bottomY = (bottomLineY + 1) * size + padY;
 		
-		// Izracun razdalj od tocke (x, y), do vseh presecisc ki jih doloca kvadratek, v katerem je tocka (x, y).
+		// Izracun razdalj od tocke (x, y) do vseh presecisc, ki jih doloca kvadratek, v katerem je tocka (x, y).
 		double r1 = Math.sqrt(Math.pow(x - leftX, 2) + Math.pow(y - topY, 2));
 		double r2 = Math.sqrt(Math.pow(x - rightX, 2) + Math.pow(y - topY, 2));
 		double r3 = Math.sqrt(Math.pow(x - leftX, 2) + Math.pow(y - bottomY, 2));
@@ -172,7 +173,7 @@ public class PlayingCanvas extends JPanel implements MouseListener, MouseMotionL
 
 	}
 	
-	// Metoda, ki si ob kliku zapomni najblitje presecisce.
+	// Metoda, ki si ob kliku zapomne najblizje presecisce.
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int x = e.getX();
@@ -181,10 +182,11 @@ public class PlayingCanvas extends JPanel implements MouseListener, MouseMotionL
 		if (intersection != null) master.click(intersection[0], intersection[1]);
 	}
 	
+	// Neimplementirane metode.
+	
 	@Override
-	public void mouseMoved(MouseEvent e) {} // Presecisce se obarva rdece, ko mu priblizamo misko
+	public void mouseMoved(MouseEvent e) {}
 
-	// Neuporabne metode
 	@Override
 	public void mouseEntered(MouseEvent e) {}
 
