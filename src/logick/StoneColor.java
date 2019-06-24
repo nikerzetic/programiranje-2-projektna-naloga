@@ -1,5 +1,7 @@
 package logick;
 
+// Mozne barve kamenckov.
+
 public enum StoneColor {
 
 	EMPTY,
@@ -9,7 +11,7 @@ public enum StoneColor {
 	@Override
 	public String toString() {
 		switch (this) {
-		case EMPTY: return " ";
+		case EMPTY: return "O";
 		case BLACK: return "B";
 		case WHITE: return "W";
 		default: return "?";

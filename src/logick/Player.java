@@ -3,7 +3,7 @@ package logick;
 import gui.MainWindow;
 import intelligence.MoveFinder;
 
-// Player je abstrakten razred, ki zna dolociti, ali je igralec na potezi in v primeru racunalnika odigrati potezo. 
+// Player je abstrakten razred, ki zna dolociti, ali je igralec na potezi, in v primeru racunalnika odigrati potezo. 
 // Lahko je ComputerPlayer ali HumanPlayer.
 
 public abstract class Player {
@@ -22,11 +22,15 @@ public abstract class Player {
 		
 	}
 	
+	// S to metodo se igralca "prisili" v igranje poteze.
 	public abstract void playYourMove();
 	
+	// Nastavi igralcevo barvo na dano barvo.
 	public void setPlayerColor(StoneColor color) {
 		this.playerColor = color;
 	}
+	
+	// Get in set metode.
 	
 	public StoneColor getPlayerColor() {
 		return this.playerColor;

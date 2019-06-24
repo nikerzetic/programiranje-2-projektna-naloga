@@ -1,8 +1,10 @@
 package logick;
 
+// Veriga je predstavljena z dvema tabelama koordinat.
+// Prazna veriga ima barvo EMPTY, veriga s kamencki iste barve pa se BLACK ali WHITE.
+// Verige s kamencki razlicnih barv program sam izbrise.
+
 public class Chain {
-	// Veriga je predstavljena z dvema tabelama koordinat.
-	// Ce so vsi njeni kamencki iste barve, ima se barvo (EMPTY, BLACK, WHITE).
 	
 	// Barva verige.
 	private StoneColor chainColor = StoneColor.EMPTY;
@@ -14,13 +16,21 @@ public class Chain {
 	private int[] xs;
 	private int[] ys;	
 	
-	// Konstruktor verig.
+	// Konstruktor verige.
 	public Chain(int[] x, int[] y) {
 		this.xs = x;
 		this.ys = y;
 	}
 	
-	// Preveri, èe tabela vsebuje potezo.
+	// Konstruktor verige iz dane verige.
+	public Chain(Chain chain) {
+		this.xs = chain.getXS();
+		this.ys = chain.getYS();
+		this.strength = chain.getStrength();
+		this.chainColor = chain.getColor();
+	}
+	
+	// Preveri, ali veriga vsebuje dano potezo.
 	public boolean containsMove(Move move) {
 		boolean value = false;
 		for (int x : this.getXS()) {
@@ -45,6 +55,7 @@ public class Chain {
 	}
 	
 	// Get in set metode.
+	
 	public int[] getXS() {
 		return this.xs;
 	}
