@@ -94,8 +94,8 @@ public class AlphaBeta {
 	
 	// Staticna ocena verige za danega igralca in igro.
 	public static int evaluateChain(Chain chain, Game game, Player me) {
-		if (chain.getColor() == me.getPlayerColor()) return  (int) Math.pow(8, chain.getStrength()-1);
-		else if (chain.getColor() != StoneColor.EMPTY) return - (int) Math.pow(8, chain.getStrength()-1);
+		if (chain.getColor() == me.getPlayerColor()) return  (int) Math.pow(4, chain.getStrength()-1);
+		else if (chain.getColor() != StoneColor.EMPTY) return - (int) Math.pow(4, chain.getStrength()-1);
 		return 0;
 	}
 		

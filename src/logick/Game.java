@@ -110,16 +110,15 @@ public class Game {
 
 		this.grid[x][y] = moveColor;
 
-		this.sieveChains(move);
+		this.sieveChains(move, moveColor);
 		this.setOnMove(this.oponent());
 		this.newStatus();
 	}
 	
 	// Metoda, ki vsaki verigi doloci moc in izbrise mrtve.
-	private void sieveChains(Move move) {
+	private void sieveChains(Move move, StoneColor moveColor) {
 		int x = move.getX();
 		int y = move.getY();
-		StoneColor moveColor = StoneColor.EMPTY;
 
 		List<Chain> chainsToBeDeleted = new LinkedList<Chain>();
 		for (Chain chain : this.chains) {
