@@ -55,6 +55,7 @@ public class Chain {
 	}
 	
 	// Get in set metode.
+	
 	public int[] getXS() {
 		return this.xs;
 	}

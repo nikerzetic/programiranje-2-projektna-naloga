@@ -32,6 +32,7 @@ public class ComputerPlayer extends Player {
 	}
 
 	// Get in set metode.
+	
 	@Override
 	public MoveFinder getWorker() {
 		return this.worker;

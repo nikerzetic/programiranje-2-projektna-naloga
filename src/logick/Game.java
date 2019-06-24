@@ -97,20 +97,6 @@ public class Game {
 		chains.remove(chain);
 	}
 	
-	// Metoda, ki preveri, ce ima veriga en bel in en crn kamencek (oziroma, ce je "mrtva")
-	private boolean isDead(Chain chain) {
-		boolean black = false;
-		boolean white = false;
-		int[] xs = chain.getXS();
-		int[] ys = chain.getYS();
-		for (int i = 0; i < 5; i++) {
-			if (grid[xs[i]][ys[i]] == StoneColor.BLACK) black = true;
-			else if (grid[xs[i]][ys[i]] == StoneColor.WHITE) white = true;
-		}
-		if (black && white) return true;
-		else return false;
-	}
-	
 	// Metoda, ki odigra potezo in izbrise vse "mrtve" verige.
 	public void play(Move move) {
 		int x = move.getX();
@@ -191,9 +177,7 @@ public class Game {
 		String newLine = System.getProperty("line.separator");
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
-				if (this.grid[j][i] == StoneColor.BLACK) string += " B";
-				else if (this.grid[j][i] == StoneColor.WHITE) string += " W";
-				else string += " O";
+				string += " " + grid[j][i];
 			}
 			string += newLine;
 		}
@@ -201,6 +185,7 @@ public class Game {
 	}
 
 	// Get in set metode.
+	
 	public static int getSize() {
 		return SIZE;
 	}

@@ -170,6 +170,7 @@ public class MainWindow extends JFrame implements ActionListener{
 	}
 	
 	// Get in set metode.
+	
 	public Game getGame() {
 		return game;
 	}
